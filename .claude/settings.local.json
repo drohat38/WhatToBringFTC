@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(vercel --version)",
+      "Bash(vercel whoami:*)",
+      "Bash(npm install:*)",
+      "Bash(vercel link:*)",
+      "Bash(vercel)",
+      "Bash(vercel --prod)",
+      "Bash(npm --version)",
+      "Bash(where chrome:*)",
+      "Bash(where \"Google Chrome\")",
+      "Read(//c/Program Files/Google/Chrome/Application/**)",
+      "Read(//c/Program Files \\(x86\\)/Google/Chrome/Application/**)",
+      "Bash(npx --yes playwright --version)",
+      "Bash(node _screenshot.mjs)",
+      "Bash(node -e ':*)",
+      "Bash(del _impact_test.html _preview.png _screenshot.mjs)",
+      "Bash(rm:*)"
+    ]
+  }
+}

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Feed the City — What to Bring</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══ MAIN VIEW ══ -->
+<div id="view-main" class="view active">
+
+  <!-- 3-step orientation -->
+  <div class="flow-steps" aria-label="How it works">
+    <div class="fs-step fs-active"><span class="fs-num">1</span><span class="fs-lbl">Plan</span></div>
+    <span class="fs-arrow" aria-hidden="true">→</span>
+    <div class="fs-step"><span class="fs-num">2</span><span class="fs-lbl">Log</span></div>
+    <span class="fs-arrow" aria-hidden="true">→</span>
+    <div class="fs-step"><span class="fs-num">3</span><span class="fs-lbl">Impact</span></div>
+  </div>
+
+  <div class="goal-section">
+    <p class="goal-eyebrow">How many sandwiches will you make?</p>
+    <div class="goal-ctrl">
+      <button class="g-btn" onclick="stepGoal(-5)" aria-label="Decrease by 5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="g-center">
+        <input class="g-input" type="number" id="goal-inp" value="30" min="5" max="500" inputmode="numeric" oninput="onGoalInput()" onblur="onGoalBlur()">
+        <span class="g-unit">Sandwiches</span>
+        <span class="g-edit-hint">tap to edit</span>
+      </div>
+      <button class="g-btn" onclick="stepGoal(5)" aria-label="Increase by 5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <p class="g-nudge">Most volunteers bring supplies for <strong>25–30 sandwiches.</strong></p>
+  </div>
+
+  <div class="sec-hd"><p class="sec-ttl">Sandwich Supplies</p><div class="sec-rule"></div></div>
+  <div class="ig ig-5">
+    <div class="ic">
+      <div class="ic-img"><img src="https://static.wixstatic.com/media/a9ae83_3bfd318c84d44c35b91fff4f46dba805~mv2.png/v1/crop/x_0,y_5,w_400,h_391/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png" alt="Sliced Bread" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>
+      <div class="ic-qty"><span class="ic-num" id="v-bread">3</span><span class="ic-unit">Loaves</span></div>
+      <div class="ic-sep"></div><p class="ic-name">Sliced Bread</p>
+      <p class="ic-hint">~20 slices/loaf · 2 per sandwich</p>
+    </div>
+    <div class="ic">
+      <div class="ic-img"><img src="https://static.wixstatic.com/media/a9ae83_aa14fd8f544444f78b47554fb506aeb5~mv2.png/v1/crop/x_0,y_5,w_400,h_391/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Untitled%20design%20(4).png" alt="Deli Meat" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>
+      <div class="ic-qty"><span class="ic-num" id="v-meat">60</span><span class="ic-unit">oz total</span></div>
+      <div class="ic-sep"></div><p class="ic-name">Deli Meat</p>
+      <p class="ic-hint">2 oz per sandwich · any package size</p>
+    </div>
+    <div class="ic">
+      <div class="ic-img"><img src="https://static.wixstatic.com/media/a9ae83_aed7077faf3e4d5399000e1c667585fc~mv2.png/v1/crop/x_0,y_5,w_400,h_391/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/2.png" alt="Sliced Cheese" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>
+      <div class="ic-qty"><span class="ic-num" id="v-cheese">30</span><span class="ic-unit">Slices</span></div>
+      <div class="ic-sep"></div><p class="ic-name">Sliced Cheese</p>
+      <p class="ic-hint">1 slice per sandwich · varies by brand</p>
+    </div>
+    <div class="ic">
+      <div class="ic-img"><img src="https://static.wixstatic.com/media/a9ae83_664af05eb665460b926ad3ddbfa83164~mv2.jpg/v1/crop/x_0,y_32,w_2800,h_2736/fill/w_220,h_215,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/001853126.jpg" alt="Yellow Mustard" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>
+      <div class="ic-qty"><span class="ic-num" id="v-mustard">1</span><span class="ic-unit">Bottle</span></div>
+      <div class="ic-sep"></div><p class="ic-name">Yellow Mustard</p>
+      <p class="ic-hint">Standard 14–20 oz · 1 squirt per sandwich</p>
+    </div>
+    <div class="ic">
+      <div class="ic-img"><img src="https://static.wixstatic.com/media/a9ae83_13b53c33ff1b4e6db6fdc83f89d8247a~mv2.png/v1/crop/x_0,y_9,w_800,h_782/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/000092478.png" alt="Sandwich Bags" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>
+      <div class="ic-qty"><span class="ic-num" id="v-bags">1</span><span class="ic-unit">Box</span></div>
+      <div class="ic-sep"></div><p class="ic-name">Sandwich Bags</p>
+      <p class="ic-hint">~50 bags/box · 1 per sandwich</p>
+    </div>
+  </div>
+
+  <div class="sec-hd sec-hd--minor"><p class="sec-ttl">Snack Items</p><div class="sec-rule"></div></div>
+  <div class="ig ig-2">
+    <div class="ic">
+      <div class="ic-img"><img src="https://static.wixstatic.com/media/a9ae83_3b7b0c57641f49aa94e36cbbe9583ae6~mv2.png/v1/crop/x_0,y_5,w_400,h_391/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/3.png" alt="Chips" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>
+      <p class="ic-name">Large Chips</p>
+      <div class="snack-step">
+        <button class="ss-btn" onclick="stepSnack('chips',-1)" aria-label="Fewer chips bags">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="ss-ctr"><span class="ss-num" id="n-chips">3</span><span class="ss-unit">Full-Size Bags</span></div>
+        <button class="ss-btn" onclick="stepSnack('chips',1)" aria-label="More chips bags">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <p class="ic-hint">~13 servings/bag · healthier ingredients preferred</p>
+    </div>
+    <div class="ic">
+      <div class="ic-img"><img src="https://static.wixstatic.com/media/a9ae83_a11fa6e07654426da9cc47a5acb60054~mv2.png/v1/crop/x_0,y_6,w_512,h_500/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/image-of-neapolitan-tangerines-fruit-27960700829740_512x512.png" alt="Tangerines" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>
+      <p class="ic-name">Tangerines</p>
+      <div class="snack-step">
+        <button class="ss-btn" onclick="stepSnack('tangerines',-1)" aria-label="Fewer tangerine bags">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="ss-ctr"><span class="ss-num" id="n-tangerines">3</span><span class="ss-unit">3 lb Bags</span></div>
+        <button class="ss-btn" onclick="stepSnack('tangerines',1)" aria-label="More tangerine bags">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <p class="ic-hint">Halos or Cuties · ~18 per bag · 2 per meal</p>
+    </div>
+  </div>
+
+  <!-- CTA block -->
+  <div class="cta-block">
+    <p class="cta-stmt">These supplies make <span class="sn" id="sum-num">30</span> sandwiches.</p>
+    <p class="cta-sub">Bring these to the event and help assemble meals for families in your community.</p>
+    <p class="cta-blurb">Ready to shop? Log your contribution below to securely track your community impact and unlock your official grocery checklist.</p>
+    <button class="cta-primary" onclick="showLog()">Log Impact &amp; Get Grocery List →</button>
+    <button class="cta-secondary" id="btn-view-impact" onclick="tryImpact()">View my impact history</button>
+  </div>
+
+  <div class="pb-40"></div>
+</div><!-- /view-main -->
+
+<!-- ══ LOG VIEW ══ -->
+<div id="view-log" class="view">
+  <div class="back-link"><button onclick="showMain()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button></div>
+  <div class="log-inner">
+    <h2 class="log-title">Lock In Your Plan</h2>
+
+    <div class="log-commit">
+      <p class="lc-stmt">You are committing to bring supplies for</p>
+      <p class="lc-num" id="log-plan-num">30</p>
+      <p class="lc-unit">sandwiches.</p>
+    </div>
+
+    <label class="fld-lbl" for="log-email">Email Address</label>
+    <div class="fld-wrap">
+      <input type="email" id="log-email" placeholder="email@example.com" autocomplete="email">
+      <p class="fld-hint">Use the same email as your Eventbrite registration.</p>
+      <p class="fld-err" id="email-err">Please enter a valid email address.</p>
+    </div>
+
+    <label class="fld-lbl">Your Chapter City</label>
+    <div class="fld-wrap">
+      <!-- Hidden select — stores the value, powers JS city list -->
+      <select id="log-chapter" style="display:none;" aria-hidden="true">
+        <option value="Allen, TX">Allen, TX</option>
+        <option value="Alpharetta, GA">Alpharetta, GA</option>
+        <option value="Arlington, TX">Arlington, TX</option>
+        <option value="Austin, TX (South)">Austin, TX (South)</option>
+        <option value="Austin, TX (Zilker)">Austin, TX (Zilker)</option>
+        <option value="Bedford, TX">Bedford, TX</option>
+        <option value="Bethel Park, PA">Bethel Park, PA</option>
+        <option value="Burleson, TX">Burleson, TX</option>
+        <option value="Carrollton, TX">Carrollton, TX</option>
+        <option value="Cedar Hill, TX">Cedar Hill, TX</option>
+        <option value="Celina, TX">Celina, TX</option>
+        <option value="Dallas, TX (Lakewood)">Dallas, TX (Lakewood)</option>
+        <option value="Dallas, TX (The Original)">Dallas, TX (The Original)</option>
+        <option value="Denton, TX" selected>Denton, TX</option>
+        <option value="Denver, CO">Denver, CO</option>
+        <option value="Elizabethtown, KY">Elizabethtown, KY</option>
+        <option value="Forney, TX">Forney, TX</option>
+        <option value="Fort Worth, TX (Alliance)">Fort Worth, TX (Alliance)</option>
+        <option value="Fort Worth, TX (Lake Worth)">Fort Worth, TX (Lake Worth)</option>
+        <option value="Fort Worth, TX (South)">Fort Worth, TX (South)</option>
+        <option value="Frisco, TX">Frisco, TX</option>
+        <option value="Garland, TX">Garland, TX</option>
+        <option value="Grand Prairie, TX">Grand Prairie, TX</option>
+        <option value="Greenville, TX">Greenville, TX</option>
+        <option value="Hendersonville, TN">Hendersonville, TN</option>
+        <option value="Highland Village, TX">Highland Village, TX</option>
+        <option value="Houston, TX">Houston, TX</option>
+        <option value="Huntsville, AL">Huntsville, AL</option>
+        <option value="Irving, TX">Irving, TX</option>
+        <option value="Lewisville/Coppell, TX">Lewisville/Coppell, TX</option>
+        <option value="Littleton, CO">Littleton, CO</option>
+        <option value="Mansfield, TX">Mansfield, TX</option>
+        <option value="McKinney, TX">McKinney, TX</option>
+        <option value="Plano, TX">Plano, TX</option>
+        <option value="Prosper, TX">Prosper, TX</option>
+        <option value="Richardson, TX">Richardson, TX</option>
+        <option value="Richmond, TX">Richmond, TX</option>
+        <option value="Rockwall, TX">Rockwall, TX</option>
+        <option value="Round Rock, TX">Round Rock, TX</option>
+        <option value="Royse City, TX">Royse City, TX</option>
+        <option value="Scottsdale, AZ">Scottsdale, AZ</option>
+        <option value="Southlake, TX">Southlake, TX</option>
+        <option value="Spring, TX">Spring, TX</option>
+        <option value="Tulsa, OK">Tulsa, OK</option>
+        <option value="Waco, TX">Waco, TX</option>
+        <option value="Waxahachie, TX">Waxahachie, TX</option>
+        <option value="Wichita, KS">Wichita, KS</option>
+        <option value="Wylie, TX">Wylie, TX</option>
+      </select>
+      <!-- Custom searchable picker -->
+      <div class="city-picker" id="city-picker" role="combobox" aria-expanded="false">
+        <button type="button" class="city-trigger" id="city-trigger-btn" onclick="toggleCityPicker()" aria-haspopup="listbox">
+          <span id="city-display">Denton, TX</span>
+          <svg class="city-caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="city-dropdown" id="city-dropdown" role="listbox">
+          <input class="city-search" id="city-search" type="text" placeholder="Search your city…" oninput="filterCities(this.value)" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search cities">
+          <div class="city-list" id="city-list"></div>
+        </div>
+      </div>
+      <p class="fld-err" id="chapter-err">Please select your chapter city.</p>
+    </div>
+
+    <button class="btn btn-orange" onclick="handleSubmit()">I'm In — Save My Plan</button>
+  </div>
+</div><!-- /view-log -->
+
+<!-- ══ IMPACT VIEW ══ -->
+<div id="view-impact" class="view">
+
+  <!-- Celebration banner — shown only after submission -->
+  <div class="celebration" id="cel-banner" style="display:none;">
+    <p class="cel-pre">You're committed</p>
+    <p class="cel-num" id="cel-num">30</p>
+    <p class="cel-label">Sandwiches for your community</p>
+    <p class="cel-msg">Your plan is saved. Now go grab those supplies and show up at the event.</p>
+    <div class="cel-divider"></div>
+    <div class="cel-actions">
+      <button class="btn btn-cel-ghost" id="btn-copy" onclick="handleCopy()">Copy Grocery List</button>
+      <button class="btn btn-cel-ghost" id="btn-save" onclick="handleSave()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Save Grocery Image
+      </button>
+    </div>
+  </div>
+
+  <div class="back-link"><button onclick="showMain()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button></div>
+
+  <div class="impact-inner">
+    <!-- First-time / empty state -->
+    <div id="impact-empty" class="impact-empty" style="display:none;">
+      <p class="ie-head">Your impact journey<br>starts here.</p>
+      <p class="ie-sub">Every time you lock in a plan and show up, your meals are counted here. Plan your first contribution to see your story grow.</p>
+      <button class="btn btn-orange ie-btn" onclick="showMain()">Plan My First Contribution</button>
+    </div>
+
+    <div class="scorecard">
+      <div class="sc-card"><div class="sc-num" id="stat-meals">0</div><div class="sc-lbl">Total Meals</div></div>
+      <div class="sc-card"><div class="sc-num" id="stat-events">0</div><div class="sc-lbl">Events</div></div>
+      <div class="sc-card"><div class="sc-num sc-city" id="stat-city">—</div><div class="sc-lbl">Top City</div></div>
+    </div>
+
+    <div class="journey">
+      <p class="journey-title">Your Journey</p>
+      <div class="journey-body">
+        <div class="ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <circle class="ring-track" cx="80" cy="80" r="64"/>
+            <circle class="ring-arc" id="ring-arc" cx="80" cy="80" r="64"
+              transform="rotate(-90 80 80)" stroke-dasharray="402" stroke-dashoffset="402"/>
+          </svg>
+          <div class="ring-center">
+            <span class="ring-num" id="j-cur">0</span>
+            <span class="ring-lbl">MEALS</span>
+          </div>
+        </div>
+        <div class="ring-info">
+          <p class="ring-next-lbl" id="j-nxt-lbl">Next: 25 meals</p>
+          <p class="ring-msg" id="j-msg">Every sandwich you pack goes directly to a family in your community.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="ms-lbl">Community Milestones</p>
+    <div class="ms-list">
+      <div class="ms-row" id="m-25"><div class="ms-dot"></div><div class="ms-body"><div class="ms-name">First Contribution</div><div class="ms-desc">You showed up and made a real difference.</div></div><div class="ms-num">25</div></div>
+      <div class="ms-row" id="m-100"><div class="ms-dot"></div><div class="ms-body"><div class="ms-name">100 Meals</div><div class="ms-desc">A hundred people ate because of what you brought.</div></div><div class="ms-num">100</div></div>
+      <div class="ms-row" id="m-250"><div class="ms-dot"></div><div class="ms-body"><div class="ms-name">250 Meals</div><div class="ms-desc">Your consistency keeps this model alive month after month.</div></div><div class="ms-num">250</div></div>
+      <div class="ms-row" id="m-500"><div class="ms-dot"></div><div class="ms-body"><div class="ms-name">500 Meals</div><div class="ms-desc">Five hundred meals. That changes a community.</div></div><div class="ms-num">500</div></div>
+    </div>
+
+    <p class="hist-lbl">Contribution History</p>
+    <div class="hist-list" id="hist-list"></div>
+
+    <div class="impact-btns">
+      <button class="btn btn-orange btn-impact-hero" id="btn-impact-save" onclick="handleImpactSave()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download My Impact Card
+      </button>
+      <div class="impact-links">
+        <button class="impact-text-link" onclick="showMain()">Back to Calculator</button>
+        <span class="impact-link-sep">·</span>
+        <button class="impact-text-link" onclick="logout()">Log out</button>
+      </div>
+    </div>
+  </div>
+</div><!-- /view-impact -->
+
+<script src="script.js"></script>
+</body>
+</html>
