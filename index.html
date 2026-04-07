@@ -6,7 +6,7 @@
   <title>Feed the City — What to Bring</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@700;800&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,14 +17,12 @@
   <!-- 3-step orientation -->
   <div class="flow-steps" aria-label="How it works">
     <div class="fs-step fs-active"><span class="fs-num">1</span><span class="fs-lbl">Plan</span></div>
-    <span class="fs-arrow" aria-hidden="true">→</span>
     <div class="fs-step"><span class="fs-num">2</span><span class="fs-lbl">Log</span></div>
-    <span class="fs-arrow" aria-hidden="true">→</span>
     <div class="fs-step"><span class="fs-num">3</span><span class="fs-lbl">Impact</span></div>
   </div>
 
   <div class="goal-section">
-    <p class="goal-eyebrow">How many sandwiches will you make?</p>
+    <p class="goal-eyebrow">How many sandwiches will you provide supplies for?</p>
     <div class="goal-ctrl">
       <button class="g-btn" onclick="stepGoal(-5)" aria-label="Decrease by 5">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -80,29 +78,13 @@
     <div class="ic">
       <div class="ic-img"><img src="https://static.wixstatic.com/media/a9ae83_3b7b0c57641f49aa94e36cbbe9583ae6~mv2.png/v1/crop/x_0,y_5,w_400,h_391/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/3.png" alt="Chips" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>
       <p class="ic-name">Large Chips</p>
-      <div class="snack-step">
-        <button class="ss-btn" onclick="stepSnack('chips',-1)" aria-label="Fewer chips bags">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <div class="ss-ctr"><span class="ss-num" id="n-chips">3</span><span class="ss-unit">Full-Size Bags</span></div>
-        <button class="ss-btn" onclick="stepSnack('chips',1)" aria-label="More chips bags">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
+      <div class="ic-qty"><span class="ic-num" id="v-chips">3</span><span class="ic-unit">Full-Size Bags</span></div>
       <p class="ic-hint">~13 servings/bag · healthier ingredients preferred</p>
     </div>
     <div class="ic">
       <div class="ic-img"><img src="https://static.wixstatic.com/media/a9ae83_a11fa6e07654426da9cc47a5acb60054~mv2.png/v1/crop/x_0,y_6,w_512,h_500/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/image-of-neapolitan-tangerines-fruit-27960700829740_512x512.png" alt="Tangerines" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>
       <p class="ic-name">Tangerines</p>
-      <div class="snack-step">
-        <button class="ss-btn" onclick="stepSnack('tangerines',-1)" aria-label="Fewer tangerine bags">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <div class="ss-ctr"><span class="ss-num" id="n-tangerines">3</span><span class="ss-unit">3 lb Bags</span></div>
-        <button class="ss-btn" onclick="stepSnack('tangerines',1)" aria-label="More tangerine bags">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
+      <div class="ic-qty"><span class="ic-num" id="v-tangerines">3</span><span class="ic-unit">3 lb Bags</span></div>
       <p class="ic-hint">Halos or Cuties · ~18 per bag · 2 per meal</p>
     </div>
   </div>
@@ -211,6 +193,7 @@
 
 <!-- ══ IMPACT VIEW ══ -->
 <div id="view-impact" class="view">
+  <div class="back-link impact-back"><button onclick="showMain()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button></div>
 
   <!-- Celebration banner — shown only after submission -->
   <div class="celebration" id="cel-banner" style="display:none;">
@@ -230,7 +213,6 @@
 
   <!-- ── Hero: sky-blue backdrop with Journey card as centerpiece ── -->
   <div class="impact-hero">
-    <div class="back-link"><button onclick="showMain()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button></div>
     <p class="impact-hero-label">Lifetime Impact</p>
 
     <div class="journey">

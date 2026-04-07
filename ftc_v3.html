@@ -6,7 +6,7 @@
   <title>Feed the City — What to Bring</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@700;800&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --orange:  #FF6500;
@@ -28,13 +28,13 @@
 
     /* ── Goal section ── */
     .goal-section { padding: 32px 20px 20px; text-align: center; }
-    .goal-eyebrow { font-family: 'Anton', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 18px; }
+    .goal-eyebrow { font-family: 'Open Sans', sans-serif; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--navy); margin-bottom: 18px; }
     .goal-ctrl { display: flex; align-items: center; justify-content: center; gap: 22px; }
     .g-btn { width: 56px; height: 56px; background: var(--navy); color: var(--white); border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,51,102,0.16); transition: background 0.18s var(--ease), transform 0.14s var(--ease); }
     .g-btn:hover { background: var(--orange); }
     .g-btn:active { transform: scale(0.92); }
     .g-center { display: flex; flex-direction: column; align-items: center; }
-    .g-input { font-family: 'Anton', sans-serif; font-size: 80px; color: var(--navy); line-height: 1; border: none; border-bottom: 2px solid transparent; background: transparent; text-align: center; width: 160px; outline: none; -moz-appearance: textfield; cursor: default; transition: border-color 0.2s; }
+    .g-input { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 80px; color: var(--navy); line-height: 1; border: none; border-bottom: 2px solid transparent; background: transparent; text-align: center; width: 160px; outline: none; -moz-appearance: textfield; cursor: default; transition: border-color 0.2s; }
     .g-input::-webkit-outer-spin-button, .g-input::-webkit-inner-spin-button { -webkit-appearance: none; }
     .g-input:focus { border-bottom-color: rgba(255,101,0,0.3); cursor: text; }
     .g-unit { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.22em; color: var(--muted); margin-top: 4px; }
@@ -65,7 +65,7 @@
     .ic-img { width: 100%; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
     .ic-img img { max-width: 100%; max-height: 80px; object-fit: contain; }
     .ic-qty { display: flex; flex-direction: column; align-items: center; margin-bottom: 7px; }
-    .ic-num { font-family: 'Anton', sans-serif; font-size: 52px; color: var(--orange); line-height: 1; }
+    .ic-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 52px; color: var(--orange); line-height: 1; }
     .ic-unit { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 2px; }
     .ic-sep { width: 24px; height: 1px; background: var(--border); margin: 0 auto 7px; }
     .ic-name { font-family: 'Anton', sans-serif; font-size: 11px; text-transform: uppercase; color: var(--navy); letter-spacing: 0.02em; margin-bottom: 5px; }
@@ -198,7 +198,7 @@
 <div id="view-main" class="view active">
 
   <div class="goal-section">
-    <p class="goal-eyebrow">How many sandwiches will you make?</p>
+    <p class="goal-eyebrow">How many sandwiches will you provide supplies for?</p>
     <div class="goal-ctrl">
       <button class="g-btn" onclick="stepGoal(-5)" aria-label="Decrease by 5">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>

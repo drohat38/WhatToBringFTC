@@ -16,7 +16,11 @@
       "Bash(node _screenshot.mjs)",
       "Bash(node -e ':*)",
       "Bash(del _impact_test.html _preview.png _screenshot.mjs)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(npx serve:*)",
+      "Bash(node _screenshot_main.mjs)",
+      "Bash(node \"C:/Users/anand/OneDrive/Documents/ftc-planner-finalversion/_screenshot.mjs\")",
+      "Skill(update-config)"
     ]
   }
 }

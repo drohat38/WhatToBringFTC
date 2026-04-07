@@ -1,29 +1,27 @@
-var S = { goal: 30, chipsDelta: 0, tgDelta: 0 };
+var S = { goal: 30 };
 var fromSubmission = false;
 
 /* ── Calc ────────────────────────────────── */
-function calcItems(g) {
+function getReq(g) {
   return {
     bread:      Math.ceil(g / 10),
-    meatOz:     g * 2,
+    meat:       g * 2,
     cheese:     g,
     mustard:    Math.ceil(g / 50),
     bags:       Math.ceil(g / 50),
-    chips:      Math.max(0, Math.ceil(g / 10) + S.chipsDelta),
-    tangerines: Math.max(0, Math.ceil(g / 10) + S.tgDelta)
+    chips:      Math.max(1, Math.floor(g / 20)),
+    tangerines: Math.max(1, Math.floor(g / 20))
   };
 }
 
 /* ── Render ──────────────────────────────── */
 function renderCalc() {
-  var g = S.goal, c = calcItems(g);
-  var vals = { 'v-bread': c.bread, 'v-meat': c.meatOz, 'v-cheese': c.cheese, 'v-mustard': c.mustard, 'v-bags': c.bags };
+  var g = S.goal, c = getReq(g);
+  var vals = { 'v-bread': c.bread, 'v-meat': c.meat, 'v-cheese': c.cheese, 'v-mustard': c.mustard, 'v-bags': c.bags, 'v-chips': c.chips, 'v-tangerines': c.tangerines };
   Object.keys(vals).forEach(function(id) {
     var el = document.getElementById(id);
     if (el && el.textContent != vals[id]) { el.textContent = vals[id]; animPop(el); }
   });
-  setText('n-chips',      c.chips);
-  setText('n-tangerines', c.tangerines);
   var sn = document.getElementById('sum-num');
   if (sn && sn.textContent != g) { sn.textContent = g; animPop(sn); }
   postH();
@@ -45,15 +43,11 @@ function onGoalBlur() {
   S.goal = v; document.getElementById('goal-inp').value = v; renderCalc();
 }
 function stepGoal(d) {
-  S.goal = Math.max(5, Math.min(500, S.goal + d));
   var inp = document.getElementById('goal-inp');
+  var v = parseInt(inp.value, 10) || 0;
+  S.goal = Math.max(5, Math.min(500, v + d));
   inp.value = S.goal;
   animPop(inp);
-  renderCalc();
-}
-function stepSnack(f, d) {
-  if (f === 'chips')      S.chipsDelta = Math.max(-Math.ceil(S.goal/10), S.chipsDelta + d);
-  if (f === 'tangerines') S.tgDelta    = Math.max(-Math.ceil(S.goal/10), S.tgDelta    + d);
   renderCalc();
 }
 
@@ -160,12 +154,14 @@ function handleCopy() {
 /* ── Save Image ──────────────────────────── */
 function handleSave() {
   var btn = document.getElementById('btn-save');
-  btn.textContent = 'Building…'; btn.disabled = true;
+  if (btn) { btn.textContent = 'Building…'; btn.disabled = true; }
   document.fonts.ready.then(function() {
     var canvas = buildCanvas();
     canvas.toBlob(function(blob) {
-      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Save Image';
-      btn.disabled = false;
+      if (btn) {
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Save Image';
+        btn.disabled = false;
+      }
       var file = new File([blob], 'ftc-shopping-list.png', { type: 'image/png' });
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         navigator.share({ files: [file], title: 'Feed the City Shopping List' }).catch(function(err) {
@@ -552,19 +548,38 @@ function updateImpact() {
   else if (total >= 25)  msg = "You've personally fed " + total + " people so far. Keep going — every meal matters.";
   else                   msg = "Every sandwich you pack goes directly to a family in your community.";
   setText('j-msg', msg);
-  /* Show full vertical timeline with staggered slide-up animation */
-  var allMs=[25,100,250,500], nextMs=null;
-  for(var mi=0;mi<allMs.length;mi++){ if(total<allMs[mi]){ nextMs=allMs[mi]; break; } }
-  allMs.forEach(function(t, i){
+  /* Show only the "one you're at" and the "next one" */
+  var allMs=[25,100,250,500];
+  var reachedMs = null, nextMs = null;
+  for(var i=allMs.length-1; i>=0; i--) { if(total>=allMs[i]){ reachedMs=allMs[i]; break; } }
+  for(var i=0; i<allMs.length; i++) { if(total<allMs[i]){ nextMs=allMs[i]; break; } }
+  
+  var visibleMs = [];
+  if (reachedMs) visibleMs.push(reachedMs);
+  if (nextMs) visibleMs.push(nextMs);
+
+  allMs.forEach(function(t){
     var el=document.getElementById('m-'+t); if(!el) return;
-    el.style.display='';
-    el.classList.toggle('reached', total>=t);
-    el.classList.toggle('active',  t===nextMs);
-    /* Force-restart the slide-up animation each time the view opens */
-    el.style.animation = 'none';
-    void el.offsetHeight; /* trigger reflow */
-    el.style.animation = 'ms-slide-up 0.55s cubic-bezier(0.22,1,0.36,1) both';
-    el.style.animationDelay = (i * 90) + 'ms';
+    el.classList.remove('has-line'); // reset line class
+    
+    if (visibleMs.indexOf(t) !== -1) {
+      el.style.display='';
+      el.classList.toggle('reached', total>=t);
+      el.classList.toggle('active',  t===nextMs);
+      
+      // if it's the first of 2 items, give it the connecting line downwards
+      if (visibleMs.length === 2 && t === visibleMs[0]) {
+        el.classList.add('has-line');
+      }
+
+      /* Force-restart the slide-up animation */
+      el.style.animation = 'none';
+      void el.offsetHeight; /* trigger reflow */
+      el.style.animation = 'ms-slide-up 0.55s cubic-bezier(0.22,1,0.36,1) both';
+      el.style.animationDelay = (visibleMs.indexOf(t) * 90) + 'ms';
+    } else {
+      el.style.display='none';
+    }
   });
   var h='';
   if(!logs.length) { h='<p class="hist-empty">No contributions logged yet.</p>'; }
