@@ -13,6 +13,11 @@ function getReq(g) {
     tangerines: Math.max(1, Math.floor(g / 20))
   };
 }
+/* calcItems — alias with meatOz field, used by canvas/copy functions */
+function calcItems(g) {
+  var r = getReq(g);
+  return { bread: r.bread, meatOz: r.meat, cheese: r.cheese, mustard: r.mustard, bags: r.bags, chips: r.chips, tangerines: r.tangerines };
+}
 
 /* ── Render ──────────────────────────────── */
 function renderCalc(doTick) {
@@ -128,34 +133,12 @@ function handleSubmit() {
   if (!city) { cErr.classList.add('show'); ok = false; }
   else { cErr.classList.remove('show'); }
   if (!ok) return;
-
-  /* ── Button morph: spinner → green checkmark → navigate ── */
-  var btn = document.getElementById('btn-submit');
-  if (btn) {
-    btn.disabled = true;
-    btn.innerHTML = '<span class="btn-spinner"></span>';
-    btn.style.background = '';
-    btn.style.boxShadow = '';
-  }
-  setTimeout(function() {
-    if (btn) {
-      btn.classList.add('morph-success');
-      btn.innerHTML = '&#10003;&nbsp; Plan Saved!';
-    }
-    setTimeout(function() {
-      localStorage.setItem('ftc_email', email);
-      var logs = JSON.parse(localStorage.getItem('ftc_logs') || '[]');
-      logs.push({ meals: S.goal, date: new Date().toLocaleDateString(), chapter: city });
-      localStorage.setItem('ftc_logs', JSON.stringify(logs));
-      var impBtn = document.getElementById('btn-view-impact'); if (impBtn) impBtn.style.display = '';
-      if (btn) {
-        btn.disabled = false;
-        btn.classList.remove('morph-success');
-        btn.innerHTML = "I\u2019m In \u2014 Save My Plan";
-      }
-      showImpact(true);
-    }, 500);
-  }, 800);
+  localStorage.setItem('ftc_email', email);
+  var logs = JSON.parse(localStorage.getItem('ftc_logs') || '[]');
+  logs.push({ meals: S.goal, date: new Date().toLocaleDateString(), chapter: city });
+  localStorage.setItem('ftc_logs', JSON.stringify(logs));
+  var impBtn = document.getElementById('btn-view-impact'); if (impBtn) impBtn.style.display = '';
+  showImpact(true);
 }
 
 /* ── Copy ────────────────────────────────── */
