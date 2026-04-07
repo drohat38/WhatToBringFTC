@@ -86,8 +86,12 @@
     .cta-stmt .sn { color: var(--orange); }
     .cta-sub { font-size: 13px; color: var(--muted); line-height: 1.65; max-width: 320px; margin: 0 auto 14px; }
     .cta-blurb { font-size: 12px; color: var(--navy); line-height: 1.65; max-width: 340px; margin: 0 auto 22px; background: rgba(0,51,102,0.05); border-left: 3px solid var(--orange); padding: 10px 14px; border-radius: 0 6px 6px 0; text-align: left; }
-    .cta-primary { display: block; width: 100%; max-width: 360px; height: 54px; background: var(--orange); color: var(--white); border: none; border-radius: 9px; font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; margin: 0 auto 16px; transition: opacity 0.18s; }
-    .cta-primary:hover { opacity: 0.87; }
+    .cta-primary { display: block; width: 100%; max-width: 380px; height: 60px; background: linear-gradient(135deg, #FF8A00 0%, var(--orange) 45%, #D94A00 100%); color: var(--white); border: none; border-radius: 18px; font-family: 'Anton', sans-serif; font-size: 16px; letter-spacing: 0.10em; text-transform: uppercase; cursor: pointer; margin: 0 auto 16px; box-shadow: 0 8px 24px rgba(255,101,0,0.32), 0 2px 8px rgba(255,101,0,0.18), inset 0 1px 0 rgba(255,255,255,0.22); transition: transform 0.20s, box-shadow 0.20s; display: flex; align-items: center; justify-content: center; }
+    .cta-primary:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 14px 36px rgba(255,101,0,0.42), 0 4px 14px rgba(255,101,0,0.24), inset 0 1px 0 rgba(255,255,255,0.28); }
+    .cta-primary:active { transform: scale(0.98); }
+    .cta-primary.morph-success { background: var(--success) !important; box-shadow: 0 8px 24px rgba(22,163,74,0.35) !important; }
+    .btn-spinner { display: inline-block; width: 20px; height: 20px; border: 2.5px solid rgba(255,255,255,0.28); border-top-color: rgba(255,255,255,0.95); border-radius: 50%; animation: btn-spin 0.65s linear infinite; vertical-align: middle; }
+    @keyframes btn-spin { to { transform: rotate(360deg); } }
     .cta-secondary { display: block; font-size: 12px; font-weight: 700; color: var(--muted); cursor: pointer; text-decoration: underline; transition: color 0.15s; }
     .cta-secondary:hover { color: var(--navy); }
 
@@ -105,7 +109,7 @@
     .back-link button:hover { color: var(--orange); }
 
     /* ── Log view ── */
-    .log-inner { max-width: 560px; margin: 0 auto; padding: 20px 18px 48px; }
+    .log-inner { max-width: 560px; margin: 0 auto; padding: 20px 18px 250px; }
     .log-title { font-family: 'Anton', sans-serif; font-size: 26px; color: var(--navy); text-transform: uppercase; margin-bottom: 20px; }
     .log-commit { background: var(--navy); border-radius: 14px; padding: 28px 24px 24px; text-align: center; margin-bottom: 28px; }
     .lc-stmt { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
@@ -143,7 +147,7 @@
     .ring-wrap { position: relative; flex-shrink: 0; width: 120px; height: 120px; }
     .ring-svg { width: 120px; height: 120px; display: block; }
     .ring-track { fill: none; stroke: rgba(255,255,255,0.10); stroke-width: 10; }
-    .ring-arc { fill: none; stroke: var(--orange); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.3s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .ring-arc { fill: none; stroke: var(--orange); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.5s cubic-bezier(0.22, 1, 0.36, 1); }
     .ring-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; pointer-events: none; }
     .ring-num { display: block; font-family: 'Anton', sans-serif; font-size: 30px; color: var(--orange); line-height: 1; }
     .ring-lbl { display: block; font-size: 8px; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.40); letter-spacing: 0.12em; margin-top: 2px; }
@@ -201,14 +205,14 @@
     <p class="goal-eyebrow">How many sandwiches will you provide supplies for?</p>
     <div class="goal-ctrl">
       <button class="g-btn" onclick="stepGoal(-5)" aria-label="Decrease by 5">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </button>
       <div class="g-center">
         <input class="g-input" type="number" id="goal-inp" value="30" min="5" max="500" inputmode="numeric" oninput="onGoalInput()" onblur="onGoalBlur()">
         <span class="g-unit">Sandwiches</span>
       </div>
       <button class="g-btn" onclick="stepGoal(5)" aria-label="Increase by 5">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </button>
     </div>
     <p class="g-nudge"><strong>Most volunteers bring supplies for 25–30 sandwiches.</strong></p>
@@ -358,7 +362,7 @@
       <p class="fld-err" id="chapter-err">Please select your chapter city.</p>
     </div>
 
-    <button class="btn btn-orange" onclick="handleSubmit()">Lock In My Plan</button>
+    <button class="cta-primary" id="btn-submit" onclick="handleSubmit()">Lock In My Plan</button>
   </div>
 </div><!-- /view-log -->
 
@@ -541,12 +545,20 @@
     if (!city) { cErr.classList.add('show'); ok = false; }
     else { cErr.classList.remove('show'); }
     if (!ok) return;
-    localStorage.setItem('ftc_email', email);
-    var logs = JSON.parse(localStorage.getItem('ftc_logs') || '[]');
-    logs.push({ meals: S.goal, date: new Date().toLocaleDateString(), chapter: city });
-    localStorage.setItem('ftc_logs', JSON.stringify(logs));
-    var impBtn=document.getElementById('btn-view-impact'); if(impBtn) impBtn.style.display='';
-    showImpact(true);
+    var btn = document.getElementById('btn-submit');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="btn-spinner"></span>'; }
+    setTimeout(function() {
+      if (btn) { btn.classList.add('morph-success'); btn.innerHTML = '&#10003;&nbsp; Plan Saved!'; }
+      setTimeout(function() {
+        localStorage.setItem('ftc_email', email);
+        var logs = JSON.parse(localStorage.getItem('ftc_logs') || '[]');
+        logs.push({ meals: S.goal, date: new Date().toLocaleDateString(), chapter: city });
+        localStorage.setItem('ftc_logs', JSON.stringify(logs));
+        var impBtn=document.getElementById('btn-view-impact'); if(impBtn) impBtn.style.display='';
+        if (btn) { btn.disabled = false; btn.classList.remove('morph-success'); btn.innerHTML = 'Lock In My Plan'; }
+        showImpact(true);
+      }, 500);
+    }, 800);
   }
 
   /* ── Copy ────────────────────────────────── */

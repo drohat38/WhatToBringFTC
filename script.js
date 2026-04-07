@@ -15,15 +15,26 @@ function getReq(g) {
 }
 
 /* ── Render ──────────────────────────────── */
-function renderCalc() {
+function renderCalc(doTick) {
   var g = S.goal, c = getReq(g);
   var vals = { 'v-bread': c.bread, 'v-meat': c.meat, 'v-cheese': c.cheese, 'v-mustard': c.mustard, 'v-bags': c.bags, 'v-chips': c.chips, 'v-tangerines': c.tangerines };
   Object.keys(vals).forEach(function(id) {
     var el = document.getElementById(id);
-    if (el && el.textContent != vals[id]) { el.textContent = vals[id]; animPop(el); }
+    if (!el) return;
+    if (doTick && parseInt(el.textContent, 10) !== vals[id]) {
+      tickTo(el, vals[id]);
+    } else if (!doTick && el.textContent != vals[id]) {
+      el.textContent = vals[id]; animPop(el);
+    }
   });
   var sn = document.getElementById('sum-num');
-  if (sn && sn.textContent != g) { sn.textContent = g; animPop(sn); }
+  if (sn) {
+    if (doTick && parseInt(sn.textContent, 10) !== g) {
+      tickTo(sn, g);
+    } else if (!doTick && sn.textContent != g) {
+      sn.textContent = g; animPop(sn);
+    }
+  }
   postH();
 }
 
@@ -48,7 +59,7 @@ function stepGoal(d) {
   S.goal = Math.max(5, Math.min(500, v + d));
   inp.value = S.goal;
   animPop(inp);
-  renderCalc();
+  renderCalc(true); /* tick mode — vigorous counter animation */
 }
 
 /* ── Navigation ──────────────────────────── */
@@ -117,12 +128,34 @@ function handleSubmit() {
   if (!city) { cErr.classList.add('show'); ok = false; }
   else { cErr.classList.remove('show'); }
   if (!ok) return;
-  localStorage.setItem('ftc_email', email);
-  var logs = JSON.parse(localStorage.getItem('ftc_logs') || '[]');
-  logs.push({ meals: S.goal, date: new Date().toLocaleDateString(), chapter: city });
-  localStorage.setItem('ftc_logs', JSON.stringify(logs));
-  var impBtn=document.getElementById('btn-view-impact'); if(impBtn) impBtn.style.display='';
-  showImpact(true);
+
+  /* ── Button morph: spinner → green checkmark → navigate ── */
+  var btn = document.getElementById('btn-submit');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-spinner"></span>';
+    btn.style.background = '';
+    btn.style.boxShadow = '';
+  }
+  setTimeout(function() {
+    if (btn) {
+      btn.classList.add('morph-success');
+      btn.innerHTML = '&#10003;&nbsp; Plan Saved!';
+    }
+    setTimeout(function() {
+      localStorage.setItem('ftc_email', email);
+      var logs = JSON.parse(localStorage.getItem('ftc_logs') || '[]');
+      logs.push({ meals: S.goal, date: new Date().toLocaleDateString(), chapter: city });
+      localStorage.setItem('ftc_logs', JSON.stringify(logs));
+      var impBtn = document.getElementById('btn-view-impact'); if (impBtn) impBtn.style.display = '';
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('morph-success');
+        btn.innerHTML = "I\u2019m In \u2014 Save My Plan";
+      }
+      showImpact(true);
+    }, 500);
+  }, 800);
 }
 
 /* ── Copy ────────────────────────────────── */
@@ -495,6 +528,7 @@ function handleImpactSave() {
 function updateImpact() {
   var logs  = JSON.parse(localStorage.getItem('ftc_logs') || '[]');
   var total = logs.reduce(function(s,e){ return s+e.meals; }, 0);
+  var prevTotal = fromSubmission ? Math.max(0, total - S.goal) : total;
 
   /* Empty / first-time state */
   var emptyEl   = document.getElementById('impact-empty');
@@ -514,31 +548,33 @@ function updateImpact() {
   var top=Object.keys(chapters).length?Object.keys(chapters).reduce(function(a,b){return chapters[a]>chapters[b]?a:b;}):'—';
   setText('stat-city', top.split(',')[0]);
   var thresholds=[25,100,250,500], nxt=thresholds.find(function(t){return total<t;})||500;
-  /* Circular ring + counter animation */
+  /* Circular ring + counter animation — synced over 1.5s cubic-bezier */
   var CIRC = 2 * Math.PI * 64; /* circumference for r=64 */
   var ringArc = document.getElementById('ring-arc');
   if (ringArc) {
     ringArc.setAttribute('stroke-dasharray', CIRC);
-    ringArc.style.strokeDashoffset = CIRC; /* start at 0% filled */
+    ringArc.style.strokeDashoffset = CIRC; /* start empty */
     var pct = Math.min(1, total / nxt);
     setTimeout(function() {
       ringArc.style.strokeDashoffset = CIRC * (1 - pct);
     }, 80);
   }
-  /* Count-up animation: 0 → total over ~900 ms with ease-out cubic */
+  /* Count-up animation: 0 → total over 1500ms — mirrors ring draw speed */
   (function() {
     var el = document.getElementById('j-cur');
     if (!el) return;
     el.textContent = '0';
-    var startTs = null, dur = 900;
-    function step(ts) {
-      if (!startTs) startTs = ts;
-      var p = Math.min((ts - startTs) / dur, 1);
-      var eased = 1 - Math.pow(1 - p, 3); /* ease-out cubic */
-      el.textContent = Math.round(eased * total);
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+    var dur = 1500;
+    setTimeout(function() {
+      var startTs = null;
+      requestAnimationFrame(function step(ts) {
+        if (!startTs) startTs = ts;
+        var p = Math.min((ts - startTs) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3); /* ease-out cubic */
+        el.textContent = Math.round(eased * total);
+        if (p < 1) requestAnimationFrame(step);
+      });
+    }, 80);
   })();
   setText('j-nxt', nxt);
   setText('j-nxt-lbl', nxt < 500 ? 'Next: '+nxt+' meals' : 'All milestones reached!');
@@ -561,12 +597,12 @@ function updateImpact() {
   allMs.forEach(function(t){
     var el=document.getElementById('m-'+t); if(!el) return;
     el.classList.remove('has-line'); // reset line class
-    
+
     if (visibleMs.indexOf(t) !== -1) {
       el.style.display='';
       el.classList.toggle('reached', total>=t);
       el.classList.toggle('active',  t===nextMs);
-      
+
       // if it's the first of 2 items, give it the connecting line downwards
       if (visibleMs.length === 2 && t === visibleMs[0]) {
         el.classList.add('has-line');
@@ -577,6 +613,14 @@ function updateImpact() {
       void el.offsetHeight; /* trigger reflow */
       el.style.animation = 'ms-slide-up 0.55s cubic-bezier(0.22,1,0.36,1) both';
       el.style.animationDelay = (visibleMs.indexOf(t) * 90) + 'ms';
+
+      /* Milestone burst — fire only on milestones just crossed this session */
+      if (fromSubmission && prevTotal < t && total >= t) {
+        el.classList.remove('just-reached');
+        void el.offsetHeight;
+        el.classList.add('just-reached');
+        setTimeout(function() { el.classList.remove('just-reached'); }, 1400);
+      }
     } else {
       el.style.display='none';
     }
@@ -676,6 +720,28 @@ function setText(id,v){ var el=document.getElementById(id); if(el)el.textContent
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function animPop(el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 function postH(){ if(window.parent)window.parent.postMessage({type:'resize',height:document.body.scrollHeight},'*'); }
+
+/* ── Liquid fast-tick counter ─────────────── */
+function tickTo(el, target) {
+  var start = parseInt(el.textContent, 10) || 0;
+  target = parseInt(target, 10);
+  if (start === target) return;
+  var steps = Math.min(10, Math.max(3, Math.abs(target - start)));
+  var dur = 190;
+  var step = 0;
+  if (el._ticker) { clearInterval(el._ticker); el._ticker = null; }
+  el._ticker = setInterval(function() {
+    step++;
+    if (step >= steps) {
+      clearInterval(el._ticker); el._ticker = null;
+      el.textContent = target;
+      animPop(el);
+    } else {
+      var frac = step / steps;
+      el.textContent = Math.round(start + (target - start) * frac);
+    }
+  }, Math.round(dur / steps));
+}
 
 window.addEventListener('load', function() {
   var saved=localStorage.getItem('ftc_email');

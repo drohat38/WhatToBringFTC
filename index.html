@@ -25,7 +25,7 @@
     <p class="goal-eyebrow">How many sandwiches will you provide supplies for?</p>
     <div class="goal-ctrl">
       <button class="g-btn" onclick="stepGoal(-5)" aria-label="Decrease by 5">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </button>
       <div class="g-center">
         <input class="g-input" type="number" id="goal-inp" value="30" min="5" max="500" inputmode="numeric" oninput="onGoalInput()" onblur="onGoalBlur()">
@@ -33,7 +33,7 @@
         <span class="g-edit-hint">tap to edit</span>
       </div>
       <button class="g-btn" onclick="stepGoal(5)" aria-label="Increase by 5">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </button>
     </div>
     <p class="g-nudge">Most volunteers bring supplies for <strong>25–30 sandwiches.</strong></p>
@@ -187,12 +187,13 @@
       <p class="fld-err" id="chapter-err">Please select your chapter city.</p>
     </div>
 
-    <button class="btn btn-orange" onclick="handleSubmit()">I'm In — Save My Plan</button>
+    <button class="cta-primary" id="btn-submit" onclick="handleSubmit()">I'm In — Save My Plan</button>
   </div>
 </div><!-- /view-log -->
 
 <!-- ══ IMPACT VIEW ══ -->
 <div id="view-impact" class="view">
+  <div class="impact-hero-bg"></div>
   <div class="back-link impact-back"><button onclick="showMain()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button></div>
 
   <!-- Celebration banner — shown only after submission -->
