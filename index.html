@@ -228,9 +228,36 @@
     </div>
   </div>
 
-  <div class="back-link"><button onclick="showMain()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button></div>
+  <!-- ── Hero: sky-blue backdrop with Journey card as centerpiece ── -->
+  <div class="impact-hero">
+    <div class="back-link"><button onclick="showMain()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button></div>
+    <p class="impact-hero-label">Lifetime Impact</p>
 
-  <div class="impact-inner">
+    <div class="journey">
+      <p class="journey-title">Your Journey</p>
+      <div class="journey-body">
+        <div class="ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <circle class="ring-track" cx="80" cy="80" r="64" stroke-linecap="round"/>
+            <circle class="ring-arc" id="ring-arc" cx="80" cy="80" r="64"
+              stroke-linecap="round" transform="rotate(-90 80 80)" stroke-dasharray="402" stroke-dashoffset="402"/>
+          </svg>
+          <div class="ring-center">
+            <span class="ring-num" id="j-cur">0</span>
+            <span class="ring-lbl">MEALS</span>
+          </div>
+        </div>
+        <div class="ring-info">
+          <p class="ring-next-lbl" id="j-nxt-lbl">Next: 25 meals</p>
+          <p class="ring-msg" id="j-msg">Every sandwich you pack goes directly to a family in your community.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── White bottom sheet ── -->
+  <div class="impact-sheet">
+
     <!-- First-time / empty state -->
     <div id="impact-empty" class="impact-empty" style="display:none;">
       <p class="ie-head">Your impact journey<br>starts here.</p>
@@ -244,27 +271,6 @@
       <div class="sc-card"><div class="sc-num sc-city" id="stat-city">—</div><div class="sc-lbl">Top City</div></div>
     </div>
 
-    <div class="journey">
-      <p class="journey-title">Your Journey</p>
-      <div class="journey-body">
-        <div class="ring-wrap">
-          <svg class="ring-svg" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-            <circle class="ring-track" cx="80" cy="80" r="64"/>
-            <circle class="ring-arc" id="ring-arc" cx="80" cy="80" r="64"
-              transform="rotate(-90 80 80)" stroke-dasharray="402" stroke-dashoffset="402"/>
-          </svg>
-          <div class="ring-center">
-            <span class="ring-num" id="j-cur">0</span>
-            <span class="ring-lbl">MEALS</span>
-          </div>
-        </div>
-        <div class="ring-info">
-          <p class="ring-next-lbl" id="j-nxt-lbl">Next: 25 meals</p>
-          <p class="ring-msg" id="j-msg">Every sandwich you pack goes directly to a family in your community.</p>
-        </div>
-      </div>
-    </div>
-
     <p class="ms-lbl">Community Milestones</p>
     <div class="ms-list">
       <div class="ms-row" id="m-25"><div class="ms-dot"></div><div class="ms-body"><div class="ms-name">First Contribution</div><div class="ms-desc">You showed up and made a real difference.</div></div><div class="ms-num">25</div></div>
@@ -273,8 +279,10 @@
       <div class="ms-row" id="m-500"><div class="ms-dot"></div><div class="ms-body"><div class="ms-name">500 Meals</div><div class="ms-desc">Five hundred meals. That changes a community.</div></div><div class="ms-num">500</div></div>
     </div>
 
-    <p class="hist-lbl">Contribution History</p>
-    <div class="hist-list" id="hist-list"></div>
+    <details class="hist-details">
+      <summary class="hist-lbl">Contribution History</summary>
+      <div class="hist-list" id="hist-list"></div>
+    </details>
 
     <div class="impact-btns">
       <button class="btn btn-orange btn-impact-hero" id="btn-impact-save" onclick="handleImpactSave()">
@@ -287,6 +295,7 @@
         <button class="impact-text-link" onclick="logout()">Log out</button>
       </div>
     </div>
+
   </div>
 </div><!-- /view-impact -->
 

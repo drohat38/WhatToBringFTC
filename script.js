@@ -502,7 +502,7 @@ function updateImpact() {
 
   /* Empty / first-time state */
   var emptyEl   = document.getElementById('impact-empty');
-  var sections  = ['.scorecard', '.journey', '.ms-lbl', '.ms-list', '.hist-lbl', '#hist-list'];
+  var sections  = ['.scorecard', '.journey', '.ms-lbl', '.ms-list', '.hist-details'];
   var isEmpty   = !logs.length;
   if (emptyEl) emptyEl.style.display = isEmpty ? 'block' : 'none';
   sections.forEach(function(sel) {
@@ -518,30 +518,53 @@ function updateImpact() {
   var top=Object.keys(chapters).length?Object.keys(chapters).reduce(function(a,b){return chapters[a]>chapters[b]?a:b;}):'—';
   setText('stat-city', top.split(',')[0]);
   var thresholds=[25,100,250,500], nxt=thresholds.find(function(t){return total<t;})||500;
-  /* Circular ring animation */
+  /* Circular ring + counter animation */
   var CIRC = 2 * Math.PI * 64; /* circumference for r=64 */
   var ringArc = document.getElementById('ring-arc');
   if (ringArc) {
     ringArc.setAttribute('stroke-dasharray', CIRC);
+    ringArc.style.strokeDashoffset = CIRC; /* start at 0% filled */
     var pct = Math.min(1, total / nxt);
     setTimeout(function() {
       ringArc.style.strokeDashoffset = CIRC * (1 - pct);
-    }, 160);
+    }, 80);
   }
-  setText('j-cur', total); setText('j-nxt', nxt);
+  /* Count-up animation: 0 → total over ~900 ms with ease-out cubic */
+  (function() {
+    var el = document.getElementById('j-cur');
+    if (!el) return;
+    el.textContent = '0';
+    var startTs = null, dur = 900;
+    function step(ts) {
+      if (!startTs) startTs = ts;
+      var p = Math.min((ts - startTs) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3); /* ease-out cubic */
+      el.textContent = Math.round(eased * total);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
+  setText('j-nxt', nxt);
   setText('j-nxt-lbl', nxt < 500 ? 'Next: '+nxt+' meals' : 'All milestones reached!');
-  var msgs=[[500,'Five hundred meals. Your commitment to this community is extraordinary.'],[250,"You've helped feed 250 people. That's the power of showing up month after month."],[100,'One hundred people ate because of what you brought.'],[25,"You're making a real difference. Keep showing up."],[0,'Every sandwich you pack goes directly to a family in your community.']];
-  var m=msgs.find(function(x){return total>=x[0];});
-  setText('j-msg',m?m[1]:msgs[msgs.length-1][1]);
-  /* Show only last reached + next milestone (max 2 rows) */
-  var allMs=[25,100,250,500], lastReached=null, nextMs=null;
-  for(var mi=0;mi<allMs.length;mi++){ if(total>=allMs[mi]) lastReached=allMs[mi]; else if(nextMs===null) nextMs=allMs[mi]; }
-  if(lastReached===500) { nextMs=null; /* all done — show top two */ lastReached=500; var prev=allMs[allMs.indexOf(500)-1]; }
-  allMs.forEach(function(t){
+  var msg;
+  if      (total >= 500) msg = "You've personally fed " + total + " people. Your commitment to this community is extraordinary.";
+  else if (total >= 100) msg = "You've personally fed " + total + " people. That's the power of showing up, month after month.";
+  else if (total >= 25)  msg = "You've personally fed " + total + " people so far. Keep going — every meal matters.";
+  else                   msg = "Every sandwich you pack goes directly to a family in your community.";
+  setText('j-msg', msg);
+  /* Show full vertical timeline with staggered slide-up animation */
+  var allMs=[25,100,250,500], nextMs=null;
+  for(var mi=0;mi<allMs.length;mi++){ if(total<allMs[mi]){ nextMs=allMs[mi]; break; } }
+  allMs.forEach(function(t, i){
     var el=document.getElementById('m-'+t); if(!el) return;
-    var show=(t===lastReached)||(t===nextMs)||(lastReached===500&&(t===500||t===250));
-    el.style.display=show?'':'none';
-    el.classList.toggle('reached',total>=t);
+    el.style.display='';
+    el.classList.toggle('reached', total>=t);
+    el.classList.toggle('active',  t===nextMs);
+    /* Force-restart the slide-up animation each time the view opens */
+    el.style.animation = 'none';
+    void el.offsetHeight; /* trigger reflow */
+    el.style.animation = 'ms-slide-up 0.55s cubic-bezier(0.22,1,0.36,1) both';
+    el.style.animationDelay = (i * 90) + 'ms';
   });
   var h='';
   if(!logs.length) { h='<p class="hist-empty">No contributions logged yet.</p>'; }
