@@ -1,5 +1,12 @@
 # FTC Planner — Claude Instructions
 
+## Mandatory Version Control Workflow
+You MUST automatically commit all changes to Git after fulfilling EVERY user prompt that involves code modifications. This ensures every step is saved to the local timeline.
+Use the following commands automatically on your own without asking:
+`git add .`
+`git commit -m "Auto-commit: <brief description of changes>"`
+Never skip this step if files were changed.
+
 ## Plugin & Tool Permissions
 
 You are **pre-authorized** to use any available plugins, MCP tools, or browser automation tools (including Playwright, `browser_subagent`, magic component builder, etc.) without waiting for explicit per-task permission from the user. Use whatever tools help you produce the best result.
