@@ -113,12 +113,24 @@ window.parent.postMessage({ type: 'ftc:resize', height: document.body.scrollHeig
 | Token | Value | Use |
 |---|---|---|
 | `--orange` | `#FF6500` | Primary CTA, hero numbers, accents |
-| `--navy` | `#003366` | Headings, dark backgrounds, footers |
+| `--navy` | `#003366` | Canvas image headers/footers only (NOT UI backgrounds) |
 | `--sky` | `#3BAEE8` | Impact cards, secondary accents |
-| `--white` | `#FFFFFF` | |
+| `--white` | `#FFFFFF` | UI surfaces, card backgrounds |
 | `--muted` | `#9CA3AF` | Hints, secondary labels |
 
 **Fonts:** Anton (display/big numbers) · Oswald (uppercase labels) · Open Sans (body/descriptions)
+
+### ⚠️ STRICT UI RULES — These Cannot Be Overridden
+
+1. **NEVER use dark mode, dark backgrounds, "noir", or "tactical" themes.** The planner is an iframe embedded inside a bright Wix event page. Any dark background will create a jarring black box on the page and is unacceptable.
+
+2. **ALWAYS use a bright/white background.** Body background must be white or very light gray (e.g., `#F5F5F7`, `#FAFAFA`, `#FFFFFF`). This ensures seamless visual integration with the parent Wix page.
+
+3. **Use glassmorphism for UI cards.** Ingredient rows and interactive elements should use frosted glass: `background: rgba(255,255,255,0.90)`, subtle `box-shadow`, and `border: 1px solid rgba(0,0,0,0.07)`. This is the established aesthetic.
+
+4. **Orange (`#FF6500`) is used for accents only.** Hero numbers, CTAs, and quantity values. Not for large background areas or full-bleed sections in the iframe UI.
+
+5. **Navy (`#003366`) is for canvas/image outputs only** (the Save Image card header/footer). Never use navy as a page background or section background in the iframe UI.
 
 ---
 
@@ -180,7 +192,7 @@ const { chromium } = require('playwright');
 # Read('_shot.png') — analyze before finalizing
 ```
 
-**Quality bar:** Strava / Duolingo / Notion level. Airy, premium, modern. Numbers dominate. Brand colors present.
+**Quality bar:** Strava / Duolingo / Notion level. Airy, premium, modern. Numbers dominate. Brand colors present. **White background. Glassmorphism cards. Never dark.**
 
 **Viewport:** 390×844 (iPhone 14 standard). Also test 360×700 for iframe simulation.
 
