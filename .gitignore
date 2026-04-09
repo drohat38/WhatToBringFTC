@@ -1,1 +1,23 @@
 .vercel
+node_modules/
+
+# Temp screenshots generated during development — never commit these
+_shot*.png
+_iter*.png
+_check*.png
+_audit*.png
+_ss_*.png
+_main_*.png
+_impact_*.png
+_final_*.png
+_tc_*.png
+_tc_*.txt
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Future Supabase / env files
+.env
+.env.local
+.env*.local

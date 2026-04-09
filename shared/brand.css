@@ -1,0 +1,46 @@
+/**
+ * shared/brand.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Feed the City — shared brand tokens.
+ * Import this in every product's CSS: @import '../shared/brand.css';
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+:root {
+  /* ── Color palette ── */
+  --orange:  #FF6500;   /* primary CTA, numbers, key accents */
+  --navy:    #003366;   /* headings, section labels, dark backgrounds */
+  --sky:     #3BAEE8;   /* impact cards, secondary accents */
+  --white:   #FFFFFF;
+  --text:    #1A1A1A;   /* body copy */
+  --muted:   #9CA3AF;   /* hints, secondary labels */
+  --border:  #E5E7EB;
+  --bg:      #F9FAFB;   /* light page background */
+  --success: #16A34A;
+  --error:   #DC2626;
+
+  /* ── Typography ── */
+  /* Anton      — hero numbers, display headings (weight: 400 — Anton is inherently bold) */
+  /* Oswald     — section labels, uppercase caps (weight: 500–700) */
+  /* Open Sans  — body copy, hints, descriptions (weight: 400–700) */
+
+  /* ── Motion ── */
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* ── Spacing scale ── */
+  --sp-xs:  4px;
+  --sp-sm:  8px;
+  --sp-md:  16px;
+  --sp-lg:  24px;
+  --sp-xl:  40px;
+
+  /* ── Radius ── */
+  --r-sm:   8px;
+  --r-md:   14px;
+  --r-lg:   20px;
+  --r-pill: 100px;
+}
+
+/* ── Google Fonts import ── */
+/* Include this link in each product's <head> instead of @import for performance: */
+/* <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"> */

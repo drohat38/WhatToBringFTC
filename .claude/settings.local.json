@@ -20,7 +20,8 @@
       "Bash(npx serve:*)",
       "Bash(node _screenshot_main.mjs)",
       "Bash(node \"C:/Users/anand/OneDrive/Documents/ftc-planner-finalversion/_screenshot.mjs\")",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "WebFetch(domain:www.tangocharities.org)"
     ]
   }
 }
