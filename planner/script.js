@@ -134,14 +134,15 @@ function buildRows(items, listId) {
     div.className = 'ic';
     div.setAttribute('data-key', item.key);
     div.innerHTML =
-      '<div class="ic-img"><img src="' + item.img + '" alt="' + item.name + '" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>' +
+      '<div class="ic-img"><img src="' + item.img + '" alt="' + item.name + '" loading="lazy" width="56" height="56" onload="this.style.opacity=1"></div>' +
+      '<div class="ic-body">' +
+        '<p class="ic-name">' + item.name + '</p>' +
+        '<p class="ic-hint">' + item.desc + '</p>' +
+      '</div>' +
       '<div class="ic-qty">' +
         '<span class="ic-num" id="qty-' + item.key + '">—</span>' +
         '<span class="ic-unit" id="qty-unit-' + item.key + '">' + item.baseUnit + '</span>' +
-      '</div>' +
-      '<div class="ic-sep"></div>' +
-      '<p class="ic-name">' + item.name + '</p>' +
-      '<p class="ic-hint">' + item.desc + '</p>';
+      '</div>';
     list.appendChild(div);
   });
 }
