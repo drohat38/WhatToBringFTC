@@ -13,41 +13,41 @@ var currentChapter = null; // { slug, name } — set by readChapterParam()
 var ITEMS = [
   {
     key: 'bread',
-    emoji: '🍞',
+    img: 'https://static.wixstatic.com/media/a9ae83_3bfd318c84d44c35b91fff4f46dba805~mv2.png/v1/crop/x_0,y_5,w_400,h_391/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png',
     name: 'Sliced Bread',
-    desc: 'Wheat or whole grain preferred',
+    desc: '~20 slices/loaf · 2 per sandwich',
     baseUnit: 'loaf',
     pluralUnit: 'loaves',
   },
   {
     key: 'meat',
-    emoji: '🥩',
+    img: 'https://static.wixstatic.com/media/a9ae83_aa14fd8f544444f78b47554fb506aeb5~mv2.png/v1/crop/x_0,y_5,w_400,h_391/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Untitled%20design%20(4).png',
     name: 'Deli Meat',
-    desc: 'Pre-packaged only — turkey, chicken, or ham. Organic preferred. No deli counter meat.',
-    baseUnit: 'oz',
-    pluralUnit: 'oz',
+    desc: '2 oz per sandwich · any package size',
+    baseUnit: 'oz total',
+    pluralUnit: 'oz total',
   },
   {
     key: 'cheese',
-    emoji: '🧀',
+    img: 'https://static.wixstatic.com/media/a9ae83_aed7077faf3e4d5399000e1c667585fc~mv2.png/v1/crop/x_0,y_5,w_400,h_391/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/2.png',
     name: 'Sliced Cheese',
-    desc: 'Real sliced cheese. Not processed cheese or cheese product.',
+    desc: '1 slice per sandwich · varies by brand',
     baseUnit: 'slice',
     pluralUnit: 'slices',
   },
   {
     key: 'mustard',
-    emoji: '🟡',
+    img: 'https://static.wixstatic.com/media/a9ae83_664af05eb665460b926ad3ddbfa83164~mv2.jpg/v1/crop/x_0,y_32,w_2800,h_2736/fill/w_220,h_215,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/001853126.jpg',
     name: 'Yellow Mustard',
-    desc: 'No spicy mustard or mayo.',
+    desc: 'Standard 14–20 oz · 1 squirt per sandwich',
     baseUnit: 'bottle',
     pluralUnit: 'bottles',
   },
   {
     key: 'bags',
-    emoji: '🛍️',
+    img: 'https://static.wixstatic.com/media/a9ae83_13b53c33ff1b4e6db6fdc83f89d8247a~mv2.png/v1/crop/x_0,y_9,w_800,h_782/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/000092478.png',
     name: 'Sandwich Bags',
-    desc: 'Must zip. Not fold-over bags.',
+    desc: '~50 bags/box · 1 per sandwich',
     baseUnit: 'box',
     pluralUnit: 'boxes',
   },
@@ -56,19 +56,19 @@ var ITEMS = [
 var ALSO_ITEMS = [
   {
     key: 'chips',
-    emoji: '🥔',
-    name: 'Chips',
-    desc: 'Full-size bags only. Healthier oils preferred (avocado, olive). No snack-size bags.',
-    baseUnit: 'bag',
-    pluralUnit: 'bags',
+    img: 'https://static.wixstatic.com/media/a9ae83_3b7b0c57641f49aa94e36cbbe9583ae6~mv2.png/v1/crop/x_0,y_5,w_400,h_391/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/3.png',
+    name: 'Large Chips',
+    desc: '~13 servings/bag · healthier oils preferred',
+    baseUnit: 'full-size bag',
+    pluralUnit: 'full-size bags',
   },
   {
     key: 'tangerines',
-    emoji: '🍊',
+    img: 'https://static.wixstatic.com/media/a9ae83_a11fa6e07654426da9cc47a5acb60054~mv2.png/v1/crop/x_0,y_6,w_512,h_500/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/image-of-neapolitan-tangerines-fruit-27960700829740_512x512.png',
     name: 'Tangerines',
-    desc: 'Halos or Cuties · 3 lb bags.',
-    baseUnit: 'bag (3 lb)',
-    pluralUnit: 'bags (3 lb)',
+    desc: 'Halos or Cuties · ~18 per bag',
+    baseUnit: '3 lb bag',
+    pluralUnit: '3 lb bags',
   },
 ];
 
@@ -130,20 +130,19 @@ function buildRows(items, listId) {
   if (!list) return;
   list.innerHTML = '';
   items.forEach(function(item) {
-    var li = document.createElement('li');
-    li.className = 'ing-row';
-    li.setAttribute('data-key', item.key);
-    li.innerHTML =
-      '<span class="ing-emoji" aria-hidden="true">' + item.emoji + '</span>' +
-      '<div class="ing-info">' +
-        '<span class="ing-name">' + item.name + '</span>' +
-        '<span class="ing-desc">' + item.desc + '</span>' +
+    var div = document.createElement('div');
+    div.className = 'ic';
+    div.setAttribute('data-key', item.key);
+    div.innerHTML =
+      '<div class="ic-img"><img src="' + item.img + '" alt="' + item.name + '" loading="lazy" width="80" height="80" onload="this.style.opacity=1"></div>' +
+      '<div class="ic-qty">' +
+        '<span class="ic-num" id="qty-' + item.key + '">—</span>' +
+        '<span class="ic-unit" id="qty-unit-' + item.key + '">' + item.baseUnit + '</span>' +
       '</div>' +
-      '<div class="ing-qty">' +
-        '<span class="ing-qty-num" id="qty-' + item.key + '">—</span>' +
-        '<span class="ing-qty-unit" id="qty-unit-' + item.key + '">' + item.baseUnit + '</span>' +
-      '</div>';
-    list.appendChild(li);
+      '<div class="ic-sep"></div>' +
+      '<p class="ic-name">' + item.name + '</p>' +
+      '<p class="ic-hint">' + item.desc + '</p>';
+    list.appendChild(div);
   });
 }
 

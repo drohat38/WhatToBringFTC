@@ -192,7 +192,10 @@ const { chromium } = require('playwright');
 # Read('_shot.png') — analyze before finalizing
 ```
 
-**Quality bar:** Strava / Duolingo / Notion level. Airy, premium, modern. Numbers dominate. Brand colors present. **White background. Glassmorphism cards. Never dark.**
+**Quality bar:** Strava / Duolingo / Notion level. Airy, premium, modern. Numbers dominate. Brand colors present.
+
+> [!WARNING]
+> **STRICT BAN ON DARK MODE OR "TACTICAL" THEMES.** All products are embedded in white Wix iframes. You must NEVER use dark backgrounds (`#010D1A`, charcoal, etc.), tech-noir elements, or emojis to represent images. All UI MUST rigorously use "Premium Glassmorphism" on clean white backgrounds. Use frosted glass blurs and soft shadows ONLY. This is non-negotiable.
 
 **Viewport:** 390×844 (iPhone 14 standard). Also test 360×700 for iframe simulation.
 

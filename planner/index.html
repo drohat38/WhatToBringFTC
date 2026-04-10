@@ -11,8 +11,6 @@
 </head>
 <body>
 
-<!-- Grain texture overlay -->
-<div class="grain" aria-hidden="true"></div>
 
 <!-- Sticky header -->
 <header id="site-header">
@@ -45,11 +43,16 @@
   <h1 class="goal-heading">HOW MANY<br>SANDWICHES?</h1>
 
   <div class="stepper" role="group" aria-label="Adjust sandwich count">
-    <button class="step-btn" onclick="stepGoal(-5)" aria-label="Decrease by 5">−5</button>
+    <button class="step-btn" onclick="stepGoal(-5)" aria-label="Decrease by 5">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
     <div class="goal-num-wrap">
       <span id="goal-display" class="goal-num" aria-live="polite" aria-atomic="true">30</span>
+      <span class="g-unit">Sandwiches</span>
     </div>
-    <button class="step-btn" onclick="stepGoal(5)" aria-label="Increase by 5">+5</button>
+    <button class="step-btn" onclick="stepGoal(5)" aria-label="Increase by 5">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
   </div>
 
   <p id="goal-hint" class="goal-hint">Enough to feed ~15 families</p>
@@ -57,11 +60,11 @@
 
 <!-- ── INGREDIENT LIST ── -->
 <section id="ingredients-zone" aria-label="What to bring">
-  <p class="section-label">WHAT TO BRING</p>
-  <ul class="ing-list" id="ing-list" role="list"></ul>
+  <div class="sec-hd"><p class="sec-ttl">Sandwich Supplies</p><div class="sec-rule"></div></div>
+  <div class="ig ig-5" id="ing-list" role="list"></div>
 
-  <div class="also-divider" role="separator"><span>ALSO BRING</span></div>
-  <ul class="ing-list also-list" id="also-list" role="list"></ul>
+  <div class="sec-hd sec-hd--minor"><p class="sec-ttl">Snack Items</p><div class="sec-rule"></div></div>
+  <div class="ig ig-2" id="also-list" role="list"></div>
 </section>
 
 <!-- ── ACTION BUTTONS ── -->
