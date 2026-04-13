@@ -1,0 +1,82 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   EmailCapture — slides in below the receipt card when flowState === 'LOG'
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.email-capture {
+  padding: 0 20px 40px;
+  max-width: 420px;
+  width: calc(100% - 28px);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ec-label {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.ec-sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 300px;
+  margin: 0 auto 20px;
+}
+
+.ec-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ec-input {
+  height: 52px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 0 16px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ec-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255, 101, 0, 0.1);
+}
+
+.ec-submit {
+  height: 54px;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  border-radius: 9px;
+  font-family: 'Anton', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.18s;
+}
+.ec-submit:hover { opacity: 0.87; }
+.ec-submit:active { opacity: 0.75; }
+
+.ec-back {
+  display: block;
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: 'Open Sans', sans-serif;
+  padding: 6px 0;
+  transition: color 0.15s;
+}
+.ec-back:hover { color: var(--navy); }

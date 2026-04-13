@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { ITEMS, ALSO_ITEMS, getReq, getUnit } from '../data/ingredients'
 import IngredientCard from './IngredientCard'
 import './MainCalculator.css'
@@ -21,7 +22,7 @@ const FLOW_STEPS = (
   </div>
 )
 
-function MainCalculator() {
+function MainCalculator({ flowState, onFlowChange }) {
   const [goal, setGoal] = useState(30)
 
   // Functional setState keeps callbacks stable (rerender-functional-setstate)
@@ -43,118 +44,152 @@ function MainCalculator() {
   const req = getReq(goal)
 
   return (
-    <div id="view-main">
+    <motion.div id="view-main" layout>
       {FLOW_STEPS}
 
-      {/* ── Goal setter ── */}
-      <div className="goal-section">
-        <p className="goal-eyebrow">How many sandwiches will you make?</p>
-
-        <div className="goal-ctrl">
-          <button
-            className="g-btn"
-            onClick={() => stepGoal(-5)}
-            aria-label="Decrease by 5"
+      <AnimatePresence mode="wait">
+        {flowState === 'PLAN' ? (
+          <motion.div
+            key="plan-content"
+            layout
+            exit={{ opacity: 0, transition: { duration: 0.15 } }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="3"
-              strokeLinecap="round" strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
+            {/* ── Goal setter ── */}
+            <div className="goal-section">
+              <p className="goal-eyebrow">How many sandwiches will you make?</p>
 
-          <div className="g-center">
-            <input
-              className="g-input"
-              type="number"
-              value={goal}
-              min={5}
-              max={500}
-              inputMode="numeric"
-              aria-label="Sandwich goal"
-              onChange={handleGoalChange}
-              onBlur={handleGoalBlur}
-            />
-            <span className="g-unit">Sandwiches</span>
-            <span className="g-edit-hint" aria-hidden="true">tap to edit</span>
-          </div>
+              <div className="goal-ctrl">
+                <button
+                  className="g-btn"
+                  onClick={() => stepGoal(-5)}
+                  aria-label="Decrease by 5"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="3"
+                    strokeLinecap="round" strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
 
-          <button
-            className="g-btn"
-            onClick={() => stepGoal(5)}
-            aria-label="Increase by 5"
+                <div className="g-center">
+                  <input
+                    className="g-input"
+                    type="number"
+                    value={goal}
+                    min={5}
+                    max={500}
+                    inputMode="numeric"
+                    aria-label="Sandwich goal"
+                    onChange={handleGoalChange}
+                    onBlur={handleGoalBlur}
+                  />
+                  <span className="g-unit">Sandwiches</span>
+                  <span className="g-edit-hint" aria-hidden="true">tap to edit</span>
+                </div>
+
+                <button
+                  className="g-btn"
+                  onClick={() => stepGoal(5)}
+                  aria-label="Increase by 5"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="3"
+                    strokeLinecap="round" strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </div>
+
+              <p className="g-nudge">
+                Most volunteers bring supplies for <strong>25–30 sandwiches.</strong>
+              </p>
+            </div>
+
+            {/* ── Sandwich supplies grid ── */}
+            <div className="sec-hd">
+              <p className="sec-ttl">Sandwich Supplies</p>
+              <div className="sec-rule" />
+            </div>
+            <div className="ig ig-5" role="list">
+              {ITEMS.map(item => (
+                <IngredientCard
+                  key={item.key}
+                  item={item}
+                  qty={req[item.key]}
+                  unit={getUnit(item, req[item.key])}
+                />
+              ))}
+            </div>
+
+            {/* ── Snack items grid ── */}
+            <div className="sec-hd sec-hd--minor">
+              <p className="sec-ttl">Snack Items</p>
+              <div className="sec-rule" />
+            </div>
+            <div className="ig ig-2" role="list">
+              {ALSO_ITEMS.map(item => (
+                <IngredientCard
+                  key={item.key}
+                  item={item}
+                  qty={req[item.key]}
+                  unit={getUnit(item, req[item.key])}
+                />
+              ))}
+            </div>
+
+            {/* ── CTA ── */}
+            <div className="cta-block">
+              <p className="cta-stmt">
+                These supplies make <span className="sn">{goal}</span> sandwiches.
+              </p>
+              <p className="cta-sub">
+                Bring these to the event and help assemble meals for families in your community.
+              </p>
+              <p className="cta-blurb">
+                Ready to shop? Log your contribution below to securely track your community
+                impact and unlock your official grocery checklist.
+              </p>
+              <button className="cta-primary" onClick={() => onFlowChange('LOG')}>
+                Log Impact &amp; Get Grocery List →
+              </button>
+              <button className="cta-secondary">
+                View my impact history
+              </button>
+            </div>
+
+            <div className="pb-40" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="receipt-content"
+            layout
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.15 }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="3"
-              strokeLinecap="round" strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
-        </div>
-
-        <p className="g-nudge">
-          Most volunteers bring supplies for <strong>25–30 sandwiches.</strong>
-        </p>
-      </div>
-
-      {/* ── Sandwich supplies grid ── */}
-      <div className="sec-hd">
-        <p className="sec-ttl">Sandwich Supplies</p>
-        <div className="sec-rule" />
-      </div>
-      <div className="ig ig-5" role="list">
-        {ITEMS.map(item => (
-          <IngredientCard
-            key={item.key}
-            item={item}
-            qty={req[item.key]}
-            unit={getUnit(item, req[item.key])}
-          />
-        ))}
-      </div>
-
-      {/* ── Snack items grid ── */}
-      <div className="sec-hd sec-hd--minor">
-        <p className="sec-ttl">Snack Items</p>
-        <div className="sec-rule" />
-      </div>
-      <div className="ig ig-2" role="list">
-        {ALSO_ITEMS.map(item => (
-          <IngredientCard
-            key={item.key}
-            item={item}
-            qty={req[item.key]}
-            unit={getUnit(item, req[item.key])}
-          />
-        ))}
-      </div>
-
-      {/* ── CTA (placeholder — log/email built in Step 3) ── */}
-      <div className="cta-block">
-        <p className="cta-stmt">
-          These supplies make <span className="sn">{goal}</span> sandwiches.
-        </p>
-        <p className="cta-sub">
-          Bring these to the event and help assemble meals for families in your community.
-        </p>
-        <p className="cta-blurb">
-          Ready to shop? Log your contribution below to securely track your community
-          impact and unlock your official grocery checklist.
-        </p>
-        <button className="cta-primary">
-          Log Impact &amp; Get Grocery List →
-        </button>
-        <button className="cta-secondary">
-          View my impact history
-        </button>
-      </div>
-
-      <div className="pb-40" />
-    </div>
+            <div className="receipt-card">
+              <div className="receipt-icon">&#10003;</div>
+              <p className="receipt-headline">
+                Supplies for <span className="receipt-num">{goal}</span> sandwiches
+              </p>
+              <ul className="receipt-list">
+                {[...ITEMS, ...ALSO_ITEMS].map(item => (
+                  <li key={item.key} className="receipt-item">
+                    <span className="ri-name">{item.name}</span>
+                    <span className="ri-qty">{req[item.key]} {getUnit(item, req[item.key])}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="pb-24" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   )
 }
 
