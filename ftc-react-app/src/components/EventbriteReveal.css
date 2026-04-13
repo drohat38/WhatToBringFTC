@@ -1,0 +1,104 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   EventbriteReveal — success state after email submit
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.eb-reveal {
+  padding: 0 20px 40px;
+  max-width: 420px;
+  width: calc(100% - 28px);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.eb-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 20px rgba(0, 51, 102, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  padding: 28px 20px 22px;
+  margin-bottom: 14px;
+}
+
+.eb-check {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--success);
+  color: var(--white);
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
+.eb-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 26px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.eb-city {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--orange);
+  margin-bottom: 14px;
+}
+
+.eb-blurb {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 300px;
+  margin: 0 auto 18px;
+}
+
+.eb-link {
+  display: block;
+  height: 54px;
+  line-height: 54px;
+  background: var(--orange);
+  color: var(--white);
+  border-radius: 9px;
+  font-family: 'Anton', sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: opacity 0.18s;
+  margin-bottom: 14px;
+}
+.eb-link:hover { opacity: 0.87; }
+
+.eb-placeholder-note {
+  font-size: 10px;
+  color: var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.eb-reset {
+  display: block;
+  margin: 0 auto;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: 'Open Sans', sans-serif;
+  padding: 6px 0;
+  transition: color 0.15s;
+}
+.eb-reset:hover { color: var(--navy); }

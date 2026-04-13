@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ITEMS, ALSO_ITEMS, getReq, getUnit } from '../data/ingredients'
 import IngredientCard from './IngredientCard'
@@ -22,8 +21,8 @@ const FLOW_STEPS = (
   </div>
 )
 
-function MainCalculator({ flowState, onFlowChange }) {
-  const [goal, setGoal] = useState(30)
+function MainCalculator({ goal, setGoal, flowState, onFlowChange }) {
+  // goal/setGoal lifted to App so handleLogSubmit can read goal for ftc_logs
 
   // Functional setState keeps callbacks stable (rerender-functional-setstate)
   function stepGoal(delta) {
