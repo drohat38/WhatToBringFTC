@@ -3,24 +3,6 @@ import { ITEMS, ALSO_ITEMS, getReq, getUnit } from '../data/ingredients'
 import IngredientCard from './IngredientCard'
 import './MainCalculator.css'
 
-// Hoisted: static JSX that never changes — no re-render cost (rendering-hoist-jsx)
-const FLOW_STEPS = (
-  <div className="flow-steps" aria-label="How it works">
-    <div className="fs-step fs-active">
-      <span className="fs-num">1</span>
-      <span className="fs-lbl">Plan</span>
-    </div>
-    <div className="fs-step">
-      <span className="fs-num">2</span>
-      <span className="fs-lbl">Log</span>
-    </div>
-    <div className="fs-step">
-      <span className="fs-num">3</span>
-      <span className="fs-lbl">Impact</span>
-    </div>
-  </div>
-)
-
 function MainCalculator({ goal, setGoal, flowState, onFlowChange }) {
   // goal/setGoal lifted to App so handleLogSubmit can read goal for ftc_logs
 
@@ -44,8 +26,6 @@ function MainCalculator({ goal, setGoal, flowState, onFlowChange }) {
 
   return (
     <motion.div id="view-main" layout>
-      {FLOW_STEPS}
-
       <AnimatePresence mode="wait">
         {flowState === 'PLAN' ? (
           <motion.div

@@ -13,49 +13,6 @@
   );
 }
 
-/* ── Flow stepper ── */
-.flow-steps {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px 20px 0;
-}
-.fs-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
-.fs-num {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--border);
-  color: var(--muted);
-  font-family: 'Anton', sans-serif;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s, color 0.2s;
-}
-.fs-lbl {
-  font-size: 9px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--muted);
-  transition: color 0.2s;
-}
-.fs-step.fs-active .fs-num {
-  background: var(--orange);
-  color: var(--white);
-}
-.fs-step.fs-active .fs-lbl {
-  color: var(--orange);
-}
-
 /* ── Goal section ── */
 .goal-section {
   padding: 32px 20px 20px;
