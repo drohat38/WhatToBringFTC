@@ -65,7 +65,6 @@ function MainCalculator({ goal, setGoal, flowState, onFlowChange }) {
                     onBlur={handleGoalBlur}
                   />
                   <span className="g-unit">Sandwiches</span>
-                  <span className="g-edit-hint" aria-hidden="true">tap to edit</span>
                 </div>
 
                 <button
@@ -135,12 +134,7 @@ function MainCalculator({ goal, setGoal, flowState, onFlowChange }) {
               <button className="cta-primary" onClick={() => onFlowChange('LOG')}>
                 Log Impact &amp; Get Grocery List →
               </button>
-              <button className="cta-secondary">
-                View my impact history
-              </button>
             </div>
-
-            <div className="pb-40" />
           </motion.div>
         ) : flowState === 'LOG' ? (
           <motion.div
@@ -164,7 +158,6 @@ function MainCalculator({ goal, setGoal, flowState, onFlowChange }) {
                 ))}
               </ul>
             </div>
-            <div className="pb-24" />
           </motion.div>
         ) : null}
       </AnimatePresence>

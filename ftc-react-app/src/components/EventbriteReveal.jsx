@@ -34,6 +34,7 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
   const chapter = getChapter(citySlug)
   const prefillUrl = `${BASE_EB_URL}?email=${encodeURIComponent(email)}`
   const [copied, setCopied] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     // In the real Wix embed: scroll parent page to the Eventbrite section
@@ -64,8 +65,133 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
     document.body.removeChild(ta)
   }
 
-  function handleSaveImage() {
-    console.log('Canvas image save coming soon — Phase 2')
+  async function handleSaveImage() {
+    setSaving(true)
+    
+    // Slight delay to let React render the "Generating..." button state
+    await new Promise(r => setTimeout(r, 40))
+
+    try {
+      // Ensure fonts are loaded before drawing
+      await document.fonts.ready
+
+      const W = 900
+      const PAD = 52
+      const r = getReq(goal)
+
+      const rows = [
+        { label: 'Sliced Bread',      qty: r.bread      + (r.bread      === 1 ? ' loaf'    : ' loaves')   },
+        { label: 'Deli Meat',         qty: r.meat        + ' oz'                                            },
+        { label: 'Sliced Cheese',     qty: r.cheese      + (r.cheese     === 1 ? ' slice'   : ' slices')   },
+        { label: 'Yellow Mustard',    qty: r.mustard     + (r.mustard    === 1 ? ' bottle'  : ' bottles')  },
+        { label: 'Sandwich Bags',     qty: r.bags        + (r.bags       === 1 ? ' box'     : ' boxes')    },
+        { label: 'Chips',             qty: r.chips       + (r.chips      === 1 ? ' bag'     : ' bags')     },
+        { label: 'Tangerines (3 lb)', qty: r.tangerines  + (r.tangerines === 1 ? ' bag'     : ' bags')     },
+      ]
+
+      const HEADER_H = 180
+      const ROW_H    = 60
+      const BODY_H   = PAD + rows.length * ROW_H + PAD
+      const FOOTER_H = 76
+      const H        = HEADER_H + BODY_H + FOOTER_H
+
+      const canvas = document.createElement('canvas')
+      canvas.width  = W
+      canvas.height = H
+      const ctx = canvas.getContext('2d')
+
+      // Header — navy
+      ctx.fillStyle = '#003366'
+      ctx.fillRect(0, 0, W, HEADER_H)
+
+      // Orange left bar
+      ctx.fillStyle = '#FF6500'
+      ctx.fillRect(0, 0, 10, HEADER_H)
+
+      // Big number
+      ctx.font      = 'bold 100px serif'
+      ctx.fillStyle = '#FF6500'
+      ctx.textAlign = 'left'
+      ctx.fillText(String(goal), PAD + 14, HEADER_H - 28)
+      const numW = ctx.measureText(String(goal)).width
+
+      // SANDWICHES label
+      ctx.font      = '600 22px sans-serif'
+      ctx.fillStyle = 'rgba(255,255,255,0.55)'
+      ctx.fillText('SANDWICHES', PAD + 14 + numW + 18, HEADER_H - 52)
+
+      // Subtitle
+      ctx.font      = '400 15px sans-serif'
+      ctx.fillStyle = 'rgba(255,255,255,0.35)'
+      ctx.fillText('FEED THE CITY — GROCERY CHECKLIST', PAD + 14 + numW + 18, HEADER_H - 26)
+
+      // Body — off-white
+      ctx.fillStyle = '#F8F9FA'
+      ctx.fillRect(0, HEADER_H, W, BODY_H)
+
+      // Rows
+      rows.forEach((row, i) => {
+        const y = HEADER_H + PAD + i * ROW_H
+
+        // Divider
+        if (i > 0) {
+          ctx.strokeStyle = '#E5E7EB'
+          ctx.lineWidth   = 1
+          ctx.beginPath()
+          ctx.moveTo(PAD, y)
+          ctx.lineTo(W - PAD, y)
+          ctx.stroke()
+        }
+
+        const midY = y + ROW_H / 2 + 6
+
+        // Item name
+        ctx.font      = '600 19px sans-serif'
+        ctx.fillStyle = '#003366'
+        ctx.textAlign = 'left'
+        ctx.fillText(row.label, PAD, midY)
+
+        // Quantity
+        ctx.font      = 'bold 22px sans-serif'
+        ctx.fillStyle = '#FF6500'
+        ctx.textAlign = 'right'
+        ctx.fillText(row.qty, W - PAD, midY)
+      })
+
+      // Footer — navy
+      ctx.fillStyle = '#003366'
+      ctx.fillRect(0, HEADER_H + BODY_H, W, FOOTER_H)
+
+      ctx.font      = '400 13px sans-serif'
+      ctx.fillStyle = 'rgba(255,255,255,0.38)'
+      ctx.textAlign = 'center'
+      ctx.fillText('tangocharities.org/feed-the-city', W / 2, HEADER_H + BODY_H + FOOTER_H / 2 + 5)
+
+      // Download
+      canvas.toBlob((blob) => {
+        if (!blob) return
+        const filename = 'ftc-grocery-list.png'
+        const file = new File([blob], filename, { type: 'image/png' })
+        
+        // Try Web Share API (mobile), else fallback to <a> download
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          navigator.share({ files: [file] }).catch(() => triggerDL(canvas, filename))
+        } else {
+          triggerDL(canvas, filename)
+        }
+      }, 'image/png')
+      
+    } finally {
+      // Keep button state for at least 1s for visual feedback completion
+      setTimeout(() => setSaving(false), 1200)
+    }
+  }
+
+  function triggerDL(canvas, filename) {
+    const a = document.createElement('a')
+    a.href = canvas.toDataURL('image/png')
+    a.download = filename
+    a.click()
   }
 
   return (
@@ -131,25 +257,26 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
         <p className="eb-title">You&apos;re all set!</p>
         {chapter && (
           <p className="eb-city">
-            {chapter.name} &middot; {['First', 'Second', 'Third', 'Fourth'][chapter.week - 1]} Saturday
+            {chapter.name} | {['First', 'Second', 'Third', 'Fourth'][chapter.week - 1]} Saturday
           </p>
         )}
 
         {/* ── Grocery list action buttons ── */}
         <div className="eb-actions">
           <button
-            className={`eb-ghost-btn${copied ? ' copied' : ''}`}
+            className={`eb-primary-btn${copied ? ' copied' : ''}`}
             type="button"
             onClick={handleCopy}
           >
-            {copied ? '✓ Copied!' : '📋 Copy List'}
+            {copied ? '✓ Copied!' : '📋 Copy Grocery List'}
           </button>
           <button
             className="eb-ghost-btn"
             type="button"
             onClick={handleSaveImage}
+            disabled={saving}
           >
-            💾 Save Image
+            {saving ? '⏳ Generating…' : '💾 Save Image'}
           </button>
         </div>
 
@@ -166,7 +293,6 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
         >
           Open Eventbrite Registration →
         </a>
-        <p className="eb-placeholder-note">[ Eventbrite Widget Goes Here ]</p>
       </div>
 
       <button className="eb-reset" type="button" onClick={onReset}>

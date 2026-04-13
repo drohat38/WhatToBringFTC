@@ -3,16 +3,17 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 .email-capture {
-  padding: 0 20px 40px;
+  padding: 28px 20px 40px;
   max-width: 420px;
   width: calc(100% - 28px);
   margin: 0 auto;
   text-align: center;
+  border-top: 1px solid var(--border);
 }
 
 .ec-label {
   font-family: 'Anton', sans-serif;
-  font-size: 22px;
+  font-size: 18px;
   text-transform: uppercase;
   color: var(--navy);
   margin-bottom: 8px;
@@ -23,13 +24,30 @@
   color: var(--muted);
   line-height: 1.65;
   max-width: 300px;
-  margin: 0 auto 20px;
+  margin: 0 auto 22px;
 }
 
 .ec-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+}
+
+.ec-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.ec-field-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  padding-left: 2px;
 }
 
 .ec-select {
