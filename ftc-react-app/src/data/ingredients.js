@@ -60,8 +60,8 @@ export const ALSO_ITEMS = [
     img: 'https://static.wixstatic.com/media/a9ae83_a11fa6e07654426da9cc47a5acb60054~mv2.png/v1/crop/x_0,y_6,w_512,h_500/fill/w_220,h_215,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/image-of-neapolitan-tangerines-fruit-27960700829740_512x512.png',
     name: 'Tangerines',
     hint: 'Halos or Cuties · ~18 per bag · 2 per meal',
-    baseUnit: '3 lb bag',
-    pluralUnit: '3 lb bags',
+    baseUnit: 'bag (3 lbs)',
+    pluralUnit: 'bags (3 lbs)',
   },
 ];
 
