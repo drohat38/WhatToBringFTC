@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────────────────────────
-   EventbriteReveal — success state after email submit
+   EventbriteReveal — celebration state + grocery list + Eventbrite handoff
    ───────────────────────────────────────────────────────────────────────────── */
 
 .eb-reveal {
@@ -21,18 +21,12 @@
   margin-bottom: 14px;
 }
 
-.eb-check {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--success);
-  color: var(--white);
-  font-size: 22px;
-  font-weight: 700;
+/* ── Animated ring graphic ── */
+.eb-svg-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 14px;
+  margin-bottom: 14px;
 }
 
 .eb-title {
@@ -49,15 +43,60 @@
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--orange);
-  margin-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+/* ── Grocery action buttons (ghost/outline) ── */
+.eb-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.eb-ghost-btn {
+  flex: 1;
+  height: 44px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  letter-spacing: 0.02em;
+  transition: border-color 0.18s, background 0.18s, color 0.18s;
+  -webkit-tap-highlight-color: transparent;
+}
+.eb-ghost-btn:hover {
+  border-color: rgba(255, 101, 0, 0.45);
+  background: rgba(255, 101, 0, 0.04);
+  color: var(--orange);
+}
+.eb-ghost-btn:active { opacity: 0.75; }
+.eb-ghost-btn.copied {
+  border-color: var(--success);
+  background: rgba(22, 163, 74, 0.07);
+  color: var(--success);
+}
+
+/* ── Divider between grocery buttons and Eventbrite CTA ── */
+.eb-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 0 16px;
 }
 
 .eb-blurb {
   font-size: 13px;
   color: var(--muted);
   line-height: 1.65;
-  max-width: 300px;
-  margin: 0 auto 18px;
+  max-width: 280px;
+  margin: 0 auto 14px;
 }
 
 .eb-link {
@@ -87,6 +126,7 @@
   padding: 10px;
 }
 
+/* ── Reset link ── */
 .eb-reset {
   display: block;
   margin: 0 auto;

@@ -45,6 +45,7 @@ function App() {
         {flowState === 'EVENTBRITE' && (
           <EventbriteReveal
             key="eventbrite-reveal"
+            goal={goal}
             email={logData.email}
             citySlug={logData.city}
             onReset={handleReset}
