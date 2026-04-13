@@ -142,7 +142,7 @@ function MainCalculator({ goal, setGoal, flowState, onFlowChange }) {
 
             <div className="pb-40" />
           </motion.div>
-        ) : (
+        ) : flowState === 'LOG' ? (
           <motion.div
             key="receipt-content"
             layout
@@ -166,7 +166,7 @@ function MainCalculator({ goal, setGoal, flowState, onFlowChange }) {
             </div>
             <div className="pb-24" />
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
     </motion.div>
   )
