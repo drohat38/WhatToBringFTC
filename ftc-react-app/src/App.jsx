@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import './index.css'
 import MainCalculator from './components/MainCalculator'
@@ -9,6 +9,18 @@ function App() {
   const [flowState, setFlowState] = useState('PLAN')
   const [goal, setGoal] = useState(30)
   const [logData, setLogData] = useState({ email: '', city: '' })
+
+  // Fire ftc:resize after every state change so the Wix iframe stays the right height.
+  // 420ms delay lets Framer Motion finish its enter animation before we measure.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.parent.postMessage(
+        { type: 'ftc:resize', height: document.body.scrollHeight },
+        '*'
+      )
+    }, 420)
+    return () => clearTimeout(timer)
+  }, [flowState])
 
   function handleLogSubmit(email, citySlug) {
     // Persist — same schema as legacy script.js: { meals, date, chapter }

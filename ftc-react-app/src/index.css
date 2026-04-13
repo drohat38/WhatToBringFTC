@@ -43,5 +43,5 @@ html, body {
 /* ── Root container ── */
 #root {
   width: 100%;
-  min-height: 100svh;
+  /* No min-height — content drives height so the Wix iframe never shows blank space */
 }
