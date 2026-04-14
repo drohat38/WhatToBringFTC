@@ -254,7 +254,7 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
           </svg>
         </div>
 
-        <p className="eb-title">You&apos;re all set!</p>
+        <p className="eb-title">Register Here!</p>
         {chapter && (
           <p className="eb-city">
             {chapter.name} | {['First', 'Second', 'Third', 'Fourth'][chapter.week - 1]} Saturday

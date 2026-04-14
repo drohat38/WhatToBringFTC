@@ -27,6 +27,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 14px;
+  min-height: 88px; /* pre-reserve space so SVG animation doesn't cause layout jitter */
 }
 
 .eb-title {
