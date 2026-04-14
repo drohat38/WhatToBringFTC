@@ -1,14 +1,26 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { CHAPTERS_BY_WEEK } from '../data/chapters'
 import './EmailCapture.css'
 
-function EmailCapture({ onFlowChange, onLogSubmit }) {
+function EmailCapture({ goal, onFlowChange, onLogSubmit }) {
   const [email, setEmail] = useState(
     () => localStorage.getItem('ftc_email') ?? ''
   )
   const [citySlug, setCitySlug] = useState('')
   const [error, setError] = useState('')
+
+  // Combobox state
+  const [cityQuery, setCityQuery] = useState('')
+  const [cityOpen, setCityOpen]   = useState(false)
+  const allCities = useMemo(
+    () => CHAPTERS_BY_WEEK.flatMap(g => g.chapters),
+    []
+  )
+  const selectedCity = allCities.find(c => c.slug === citySlug) ?? null
+  const cityOptions  = cityQuery.trim()
+    ? allCities.filter(c => c.name.toLowerCase().includes(cityQuery.toLowerCase()))
+    : allCities
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -26,29 +38,48 @@ function EmailCapture({ onFlowChange, onLogSubmit }) {
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <p className="ec-label">Lock in your spot</p>
-      <p className="ec-sub">
+      <p className="ec-label">Lock in your contribution</p>
+
+      <p className="ec-confirm">
+        These supplies make <strong>{goal}</strong> sandwiches. Bring these to the event and help assemble meals for families in your community.
+      </p>
+      <p className="ec-instruction">
         Select your city and enter your email to get your grocery checklist.
       </p>
 
       <form className="ec-form" onSubmit={handleSubmit} noValidate>
         <div className="ec-field">
           <label className="ec-field-label" htmlFor="ec-city">City</label>
-          <select
-            id="ec-city"
-            className="ec-select"
-            value={citySlug}
-            onChange={e => { setCitySlug(e.target.value); setError('') }}
-          >
-            <option value="">Select your city…</option>
-            {CHAPTERS_BY_WEEK.map(group => (
-              <optgroup key={group.week} label={group.label}>
-                {group.chapters.map(ch => (
-                  <option key={ch.slug} value={ch.slug}>{ch.name}</option>
+          <div className="ec-combobox">
+            <input
+              id="ec-city"
+              className="ec-combobox-input"
+              type="text"
+              placeholder="Search your city…"
+              autoComplete="off"
+              value={selectedCity ? selectedCity.name : cityQuery}
+              onFocus={() => { setCityOpen(true); if (selectedCity) setCityQuery('') }}
+              onChange={e => { setCityQuery(e.target.value); setCitySlug(''); setCityOpen(true) }}
+              onBlur={() => setTimeout(() => setCityOpen(false), 150)}
+            />
+            {cityOpen && cityOptions.length > 0 && (
+              <div className="ec-city-list" role="listbox">
+                {cityOptions.slice(0, 8).map(c => (
+                  <button
+                    key={c.slug}
+                    type="button"
+                    role="option"
+                    className={`ec-city-opt${c.slug === citySlug ? ' active' : ''}`}
+                    onMouseDown={() => {
+                      setCitySlug(c.slug); setCityQuery(''); setCityOpen(false); setError('')
+                    }}
+                  >
+                    {c.name}
+                  </button>
                 ))}
-              </optgroup>
-            ))}
-          </select>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="ec-field">

@@ -1,192 +1,188 @@
 /* ─────────────────────────────────────────────────────────────────────────────
-   EventbriteReveal — Grocery manifest + Eventbrite registration handoff
+   EventbriteReveal — Native Shopping List & Registration Handoff
    ───────────────────────────────────────────────────────────────────────────── */
 
 .eb-reveal {
-  padding: 20px 20px 36px;
-  max-width: 480px;
-  width: 100%;
+  padding: 0 8px 40px;
+  max-width: 440px;
+  width: calc(100% - 16px);
   margin: 0 auto;
+  text-align: center;
 }
 
-/* ── Manifest card ── */
-.eb-card {
+/* ── Native Shopping List Card ── */
+.receipt-card {
   background: var(--white);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-left: 3px solid var(--orange);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 14px rgba(0, 51, 102, 0.07);
-  margin-bottom: 16px;
+  box-shadow: 0 4px 24px rgba(0, 51, 102, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  padding: 0;
+  text-align: left;
+  margin-bottom: 24px;
 }
 
-/* Card header: title + meta + actions */
-.eb-card-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px 12px;
+/* ── Header Block ── */
+.receipt-header-block {
+  padding: 24px 20px 18px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(251, 251, 253, 0.5);
+  text-align: center;
 }
-
-.eb-headline {
+.receipt-headline {
   font-family: 'Anton', sans-serif;
-  font-size: 18px;
+  font-size: 28px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--navy);
   line-height: 1.1;
-  margin-bottom: 3px;
+  margin-bottom: 6px;
 }
-
-.eb-card-title-wrap {
-  min-width: 0; /* allow text-overflow to work inside flex */
+.receipt-meta {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--orange);
+  margin-bottom: 6px;
 }
-
-.eb-meta {
-  font-size: 12px;
+.receipt-sub-goal {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--muted);
-  line-height: 1.4;
+}
+.receipt-sub-goal span {
+  color: var(--navy);
+  font-weight: 800;
 }
 
-.eb-meta strong {
-  color: var(--text);
-  font-weight: 700;
+/* ── List Rows ── */
+.receipt-list {
+  list-style: none;
+  padding: 6px 0;
+  margin: 0;
 }
-
-.eb-meta-city {
-  margin-top: 1px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* ── Icon toolbar ── */
-.eb-toolbar {
+.receipt-item {
   display: flex;
-  gap: 5px;
-  flex-shrink: 0;
-  padding-top: 1px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: background 0.12s;
+  -webkit-tap-highlight-color: transparent;
+}
+.receipt-item:last-child { border-bottom: none; }
+.receipt-item:hover { background: rgba(255, 101, 0, 0.03); }
+
+.ri-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.eb-icon-btn {
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 7px;
-  background: var(--white);
+/* Circle states */
+.item-check {
+  color: #D1D5DB;
+  transition: color 0.18s;
+  flex-shrink: 0;
+}
+.item-check.checked {
+  color: var(--orange);
+}
+
+.ri-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  transition: color 0.18s;
+}
+
+/* Checked item: strikethrough + muted */
+.receipt-item.checked .ri-name {
   color: var(--muted);
+  text-decoration: line-through;
+}
+.receipt-item.checked .ri-qty {
+  opacity: 0.45;
+}
+
+.ri-qty {
+  font-family: 'Anton', sans-serif;
+  font-size: 15px;
+  color: var(--orange);
+  letter-spacing: 0.02em;
+  transition: opacity 0.18s;
+}
+
+/* ── Grocery action buttons ── */
+.eb-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.eb-util-btn {
+  flex: 1;
+  height: 50px;
+  background: var(--white);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 9px;
+  box-shadow: 0 2px 8px rgba(0, 51, 102, 0.04);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
-  -webkit-tap-highlight-color: transparent;
+  gap: 6px;
+  transition: all 0.2s;
 }
+.eb-util-btn:hover { background: rgba(255,101,0,0.04); border-color: rgba(255,101,0,0.2); color: var(--orange); }
+.eb-util-btn:active { transform: scale(0.96); }
+.eb-util-btn:disabled { opacity: 0.55; cursor: default; transform: none; box-shadow: none; }
+.eb-util-btn.copied { background: var(--success); color: var(--white); border-color: var(--success); }
 
-.eb-icon-btn:hover {
-  border-color: rgba(255, 101, 0, 0.4);
-  color: var(--orange);
-  background: rgba(255, 101, 0, 0.04);
-}
-
-.eb-icon-btn:active { opacity: 0.7; }
-
-.eb-icon-btn:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.eb-icon-btn.done {
-  border-color: var(--success);
-  color: var(--success);
-  background: rgba(22, 163, 74, 0.06);
-}
-
-/* ── Section labels within the list ── */
-.eb-section-label {
-  padding: 6px 16px 5px;
-  font-size: 9px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--muted);
-  background: rgba(0, 0, 0, 0.018);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-/* ── Grocery rows ── */
-.eb-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  padding: 10px 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.eb-row:last-child { border-bottom: none; }
-
-.eb-row-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.eb-row-qty {
-  font-family: 'Anton', sans-serif;
-  font-size: 14px;
-  color: var(--orange);
-  white-space: nowrap;
-}
-
-/* ── Registration CTA ── */
-.eb-register-prompt {
-  font-size: 13px;
-  color: var(--muted);
-  text-align: center;
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
-
-.eb-register-btn {
+/* ── Final Eventbrite Call to Action ── */
+.eb-primary-cta {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  height: 52px;
+  height: 56px;
   background: var(--orange);
   color: var(--white);
-  border-radius: 9px;
+  border-radius: 12px;
   font-family: 'Anton', sans-serif;
-  font-size: 15px;
-  letter-spacing: 0.06em;
+  font-size: 18px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: opacity 0.18s;
+  box-shadow: 0 4px 14px rgba(255, 101, 0, 0.28);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-
-.eb-register-btn:hover { opacity: 0.88; }
+.eb-primary-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 101, 0, 0.35); }
+.eb-primary-cta:active { transform: scale(0.96); }
 
 /* ── Reset link ── */
 .eb-reset {
   display: block;
-  width: 100%;
-  margin-top: 12px;
-  padding: 12px 0 4px;
-  border: none;
-  border-top: 1px solid var(--border);
-  background: none;
+  margin: 16px auto 0;
+  width: calc(100% - 40px);
   font-size: 12px;
   font-weight: 700;
   color: var(--muted);
-  text-align: center;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border);
   cursor: pointer;
   text-decoration: underline;
   font-family: 'Open Sans', sans-serif;
+  padding: 14px 0 6px;
   transition: color 0.15s;
 }
-
 .eb-reset:hover { color: var(--navy); }
