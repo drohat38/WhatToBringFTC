@@ -4,30 +4,87 @@ import { getChapter } from '../data/chapters'
 import { getReq } from '../data/ingredients'
 import './EventbriteReveal.css'
 
-// Prototype prefill URL — in production this is the real chapter Eventbrite URL
 const BASE_EB_URL = 'https://www.eventbrite.com/e/feed-the-city-registration'
 
-// Pure function at module level — no re-creation on render
+// Plain-text grocery list — no emojis
 function buildGroceryText(goal, cityName) {
   const r = getReq(goal)
   return [
-    '🥪 FEED THE CITY — GROCERY LIST',
-    cityName ? '📍 ' + cityName : null,
-    '🎯 Goal: ' + goal + ' sandwiches (~' + Math.round(goal / 2) + ' families)',
+    'FEED THE CITY — GROCERY LIST',
+    cityName || null,
+    'Goal: ' + goal + ' sandwiches (~' + Math.round(goal / 2) + ' families)',
     '',
     '— SANDWICHES —',
-    '🍞 Sliced Bread      ' + r.bread + (r.bread === 1 ? ' loaf' : ' loaves'),
-    '🥩 Deli Meat          ' + r.meat + ' oz',
-    '🧀 Sliced Cheese      ' + r.cheese + (r.cheese === 1 ? ' slice' : ' slices'),
-    '🟡 Yellow Mustard    ' + r.mustard + (r.mustard === 1 ? ' bottle' : ' bottles'),
-    '🛍️ Sandwich Bags     ' + r.bags + (r.bags === 1 ? ' box' : ' boxes'),
+    'Sliced Bread     ' + r.bread   + (r.bread   === 1 ? ' loaf'   : ' loaves'),
+    'Deli Meat        ' + r.meat    + ' oz',
+    'Sliced Cheese    ' + r.cheese  + (r.cheese  === 1 ? ' slice'  : ' slices'),
+    'Yellow Mustard   ' + r.mustard + (r.mustard === 1 ? ' bottle' : ' bottles'),
+    'Sandwich Bags    ' + r.bags    + (r.bags    === 1 ? ' box'    : ' boxes'),
     '',
     '— ALSO BRING —',
-    '🥔 Chips              ' + r.chips + (r.chips === 1 ? ' bag' : ' bags') + ' (full-size)',
-    '🍊 Tangerines         ' + r.tangerines + (r.tangerines === 1 ? ' bag' : ' bags') + ' · 3 lb (Halos/Cuties)',
+    'Chips            ' + r.chips      + (r.chips      === 1 ? ' bag' : ' bags') + ' (full-size)',
+    'Tangerines       ' + r.tangerines + (r.tangerines === 1 ? ' bag' : ' bags') + ' · 3 lb',
     '',
     'feedthecity.org | tangocharities.org',
   ].filter(l => l !== null).join('\n')
+}
+
+function makeSandwichRows(r) {
+  return [
+    { label: 'Sliced Bread',   qty: r.bread   + (r.bread   === 1 ? ' loaf'   : ' loaves')  },
+    { label: 'Deli Meat',      qty: r.meat    + ' oz'                                        },
+    { label: 'Sliced Cheese',  qty: r.cheese  + (r.cheese  === 1 ? ' slice'  : ' slices')  },
+    { label: 'Yellow Mustard', qty: r.mustard + (r.mustard === 1 ? ' bottle' : ' bottles') },
+    { label: 'Sandwich Bags',  qty: r.bags    + (r.bags    === 1 ? ' box'    : ' boxes')    },
+  ]
+}
+
+function makeSnackRows(r) {
+  return [
+    { label: 'Chips',            qty: r.chips      + (r.chips      === 1 ? ' bag' : ' bags') + ', full-size' },
+    { label: 'Tangerines, 3 lb', qty: r.tangerines + (r.tangerines === 1 ? ' bag' : ' bags')               },
+  ]
+}
+
+// Feather-style stroke icons — no fill, no emoji
+function IconCopy() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="9" y="9" width="13" height="13" rx="2"/>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+    </svg>
+  )
+}
+
+function IconCheck() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  )
+}
+
+function IconDownload() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+  )
+}
+
+function IconArrow() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="5" y1="12" x2="19" y2="12"/>
+      <polyline points="12 5 19 12 12 19"/>
+    </svg>
+  )
 }
 
 function EventbriteReveal({ goal, email, citySlug, onReset }) {
@@ -36,8 +93,11 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
   const [copied, setCopied] = useState(false)
   const [saving, setSaving] = useState(false)
 
+  const r = getReq(goal)
+  const weekNames = ['First', 'Second', 'Third', 'Fourth']
+  const weekLabel = chapter ? weekNames[chapter.week - 1] + ' Saturday' : null
+
   useEffect(() => {
-    // In the real Wix embed: scroll parent page to the Eventbrite section
     window.parent.postMessage({ type: 'ftc:scrollToRegistration' }, '*')
   }, [])
 
@@ -67,122 +127,66 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
 
   async function handleSaveImage() {
     setSaving(true)
-    
-    // Slight delay to let React render the "Generating..." button state
-    await new Promise(r => setTimeout(r, 40))
-
+    await new Promise(res => setTimeout(res, 40))
     try {
-      // Ensure fonts are loaded before drawing
       await document.fonts.ready
-
-      const W = 900
-      const PAD = 52
-      const r = getReq(goal)
-
-      const rows = [
-        { label: 'Sliced Bread',      qty: r.bread      + (r.bread      === 1 ? ' loaf'    : ' loaves')   },
-        { label: 'Deli Meat',         qty: r.meat        + ' oz'                                            },
-        { label: 'Sliced Cheese',     qty: r.cheese      + (r.cheese     === 1 ? ' slice'   : ' slices')   },
-        { label: 'Yellow Mustard',    qty: r.mustard     + (r.mustard    === 1 ? ' bottle'  : ' bottles')  },
-        { label: 'Sandwich Bags',     qty: r.bags        + (r.bags       === 1 ? ' box'     : ' boxes')    },
-        { label: 'Chips',             qty: r.chips       + (r.chips      === 1 ? ' bag'     : ' bags')     },
-        { label: 'Tangerines (3 lb)', qty: r.tangerines  + (r.tangerines === 1 ? ' bag'     : ' bags')     },
-      ]
-
-      const HEADER_H = 180
-      const ROW_H    = 60
-      const BODY_H   = PAD + rows.length * ROW_H + PAD
+      const W = 900, PAD = 52
+      const allRows = [...makeSandwichRows(r), ...makeSnackRows(r)]
+      const HEADER_H = 180, ROW_H = 60
+      const BODY_H = PAD + allRows.length * ROW_H + PAD
       const FOOTER_H = 76
-      const H        = HEADER_H + BODY_H + FOOTER_H
+      const H = HEADER_H + BODY_H + FOOTER_H
 
       const canvas = document.createElement('canvas')
-      canvas.width  = W
-      canvas.height = H
+      canvas.width = W; canvas.height = H
       const ctx = canvas.getContext('2d')
 
       // Header — navy
-      ctx.fillStyle = '#003366'
-      ctx.fillRect(0, 0, W, HEADER_H)
+      ctx.fillStyle = '#003366'; ctx.fillRect(0, 0, W, HEADER_H)
+      ctx.fillStyle = '#FF6500'; ctx.fillRect(0, 0, 10, HEADER_H)
 
-      // Orange left bar
-      ctx.fillStyle = '#FF6500'
-      ctx.fillRect(0, 0, 10, HEADER_H)
-
-      // Big number
-      ctx.font      = 'bold 100px serif'
-      ctx.fillStyle = '#FF6500'
-      ctx.textAlign = 'left'
+      // Goal number
+      ctx.font = 'bold 100px serif'; ctx.fillStyle = '#FF6500'; ctx.textAlign = 'left'
       ctx.fillText(String(goal), PAD + 14, HEADER_H - 28)
       const numW = ctx.measureText(String(goal)).width
 
-      // SANDWICHES label
-      ctx.font      = '600 22px sans-serif'
-      ctx.fillStyle = 'rgba(255,255,255,0.55)'
+      ctx.font = '600 22px sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.55)'
       ctx.fillText('SANDWICHES', PAD + 14 + numW + 18, HEADER_H - 52)
-
-      // Subtitle
-      ctx.font      = '400 15px sans-serif'
-      ctx.fillStyle = 'rgba(255,255,255,0.35)'
+      ctx.font = '400 15px sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.35)'
       ctx.fillText('FEED THE CITY — GROCERY CHECKLIST', PAD + 14 + numW + 18, HEADER_H - 26)
 
-      // Body — off-white
-      ctx.fillStyle = '#F8F9FA'
-      ctx.fillRect(0, HEADER_H, W, BODY_H)
+      // Body
+      ctx.fillStyle = '#F8F9FA'; ctx.fillRect(0, HEADER_H, W, BODY_H)
 
-      // Rows
-      rows.forEach((row, i) => {
+      allRows.forEach((row, i) => {
         const y = HEADER_H + PAD + i * ROW_H
-
-        // Divider
         if (i > 0) {
-          ctx.strokeStyle = '#E5E7EB'
-          ctx.lineWidth   = 1
-          ctx.beginPath()
-          ctx.moveTo(PAD, y)
-          ctx.lineTo(W - PAD, y)
-          ctx.stroke()
+          ctx.strokeStyle = '#E5E7EB'; ctx.lineWidth = 1
+          ctx.beginPath(); ctx.moveTo(PAD, y); ctx.lineTo(W - PAD, y); ctx.stroke()
         }
-
         const midY = y + ROW_H / 2 + 6
-
-        // Item name
-        ctx.font      = '600 19px sans-serif'
-        ctx.fillStyle = '#003366'
-        ctx.textAlign = 'left'
+        ctx.font = '600 19px sans-serif'; ctx.fillStyle = '#003366'; ctx.textAlign = 'left'
         ctx.fillText(row.label, PAD, midY)
-
-        // Quantity
-        ctx.font      = 'bold 22px sans-serif'
-        ctx.fillStyle = '#FF6500'
-        ctx.textAlign = 'right'
+        ctx.font = 'bold 22px sans-serif'; ctx.fillStyle = '#FF6500'; ctx.textAlign = 'right'
         ctx.fillText(row.qty, W - PAD, midY)
       })
 
       // Footer — navy
-      ctx.fillStyle = '#003366'
-      ctx.fillRect(0, HEADER_H + BODY_H, W, FOOTER_H)
-
-      ctx.font      = '400 13px sans-serif'
-      ctx.fillStyle = 'rgba(255,255,255,0.38)'
-      ctx.textAlign = 'center'
+      ctx.fillStyle = '#003366'; ctx.fillRect(0, HEADER_H + BODY_H, W, FOOTER_H)
+      ctx.font = '400 13px sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.38)'; ctx.textAlign = 'center'
       ctx.fillText('tangocharities.org/feed-the-city', W / 2, HEADER_H + BODY_H + FOOTER_H / 2 + 5)
 
-      // Download
-      canvas.toBlob((blob) => {
+      canvas.toBlob(blob => {
         if (!blob) return
         const filename = 'ftc-grocery-list.png'
         const file = new File([blob], filename, { type: 'image/png' })
-        
-        // Try Web Share API (mobile), else fallback to <a> download
         if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
           navigator.share({ files: [file] }).catch(() => triggerDL(canvas, filename))
         } else {
           triggerDL(canvas, filename)
         }
       }, 'image/png')
-      
     } finally {
-      // Keep button state for at least 1s for visual feedback completion
       setTimeout(() => setSaving(false), 1200)
     }
   }
@@ -197,106 +201,80 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
   return (
     <motion.section
       className="eb-reveal"
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
-      transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+      exit={{ opacity: 0, y: 16 }}
+      transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
+      {/* ── Grocery manifest card ── */}
       <div className="eb-card">
 
-        {/* ── Animated success ring ── */}
-        <div className="eb-svg-wrap">
-          <svg width="88" height="88" viewBox="0 0 88 88" aria-hidden="true">
-            {/* Faint track ring */}
-            <circle
-              cx="44" cy="44" r="36"
-              stroke="rgba(255,101,0,0.12)"
-              strokeWidth="5"
-              fill="none"
-            />
-            {/* Animated ring — rotated so it draws from 12 o'clock */}
-            <g transform="rotate(-90 44 44)">
-              <motion.circle
-                cx="44" cy="44" r="36"
-                stroke="#FF6500"
-                strokeWidth="5"
-                fill="none"
-                strokeLinecap="round"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 0.52, ease: [0.25, 0.46, 0.45, 0.94] }}
-              />
-            </g>
-            {/* Filled orange circle springs in after ring completes */}
-            <motion.circle
-              cx="44" cy="44" r="31"
-              fill="#FF6500"
-              style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.28, delay: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
-            />
-            {/* Checkmark draws itself on top of the filled circle */}
-            <motion.path
-              d="M 28 44 L 39 55 L 61 31"
-              stroke="white"
-              strokeWidth="4.5"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{
-                pathLength: { duration: 0.28, delay: 0.54 },
-                opacity:    { duration: 0.01, delay: 0.54 },
-              }}
-            />
-          </svg>
+        {/* Header: title + meta + icon toolbar */}
+        <div className="eb-card-head">
+          <div className="eb-card-title-wrap">
+            <p className="eb-headline">Grocery List</p>
+            <p className="eb-meta"><strong>{goal} sandwiches</strong></p>
+            {chapter && (
+              <p className="eb-meta eb-meta-city">{chapter.name} · {weekLabel}</p>
+            )}
+          </div>
+          <div className="eb-toolbar" role="toolbar" aria-label="List actions">
+            <button
+              className={`eb-icon-btn${copied ? ' done' : ''}`}
+              type="button"
+              onClick={handleCopy}
+              title="Copy list"
+              aria-label="Copy grocery list to clipboard"
+            >
+              {copied ? <IconCheck /> : <IconCopy />}
+            </button>
+            <button
+              className="eb-icon-btn"
+              type="button"
+              onClick={handleSaveImage}
+              disabled={saving}
+              title={saving ? 'Generating…' : 'Save as image'}
+              aria-label="Download grocery list as image"
+            >
+              <IconDownload />
+            </button>
+          </div>
         </div>
 
-        <p className="eb-title">Register Here!</p>
-        {chapter && (
-          <p className="eb-city">
-            {chapter.name} | {['First', 'Second', 'Third', 'Fourth'][chapter.week - 1]} Saturday
-          </p>
-        )}
-
-        {/* ── Grocery list action buttons ── */}
-        <div className="eb-actions">
-          <button
-            className={`eb-primary-btn${copied ? ' copied' : ''}`}
-            type="button"
-            onClick={handleCopy}
-          >
-            {copied ? '✓ Copied!' : '📋 Copy Grocery List'}
-          </button>
-          <button
-            className="eb-ghost-btn"
-            type="button"
-            onClick={handleSaveImage}
-            disabled={saving}
-          >
-            {saving ? '⏳ Generating…' : '💾 Save Image'}
-          </button>
+        {/* Rows */}
+        <div className="eb-rows">
+          <div className="eb-section-label">Sandwiches</div>
+          {makeSandwichRows(r).map(row => (
+            <div key={row.label} className="eb-row">
+              <span className="eb-row-name">{row.label}</span>
+              <span className="eb-row-qty">{row.qty}</span>
+            </div>
+          ))}
+          <div className="eb-section-label">Also Bring</div>
+          {makeSnackRows(r).map(row => (
+            <div key={row.label} className="eb-row">
+              <span className="eb-row-name">{row.label}</span>
+              <span className="eb-row-qty">{row.qty}</span>
+            </div>
+          ))}
         </div>
-
-        {/* ── Eventbrite section ── */}
-        <div className="eb-divider" />
-        <p className="eb-blurb">
-          Lock in your spot — your email is pre-filled.
-        </p>
-        <a
-          className="eb-link"
-          href={prefillUrl}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Open Eventbrite Registration →
-        </a>
       </div>
 
+      {/* ── Eventbrite registration ── */}
+      <p className="eb-register-prompt">
+        Reserve your spot — your email is pre-filled.
+      </p>
+      <a
+        className="eb-register-btn"
+        href={prefillUrl}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Register on Eventbrite <IconArrow />
+      </a>
+
       <button className="eb-reset" type="button" onClick={onReset}>
-        ← Plan another event
+        Plan another event
       </button>
     </motion.section>
   )
