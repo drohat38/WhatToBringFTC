@@ -40,13 +40,16 @@ function App() {
 
   return (
     <div id="app-shell">
-      <MainCalculator
-        goal={goal}
-        setGoal={setGoal}
-        flowState={flowState}
-        onFlowChange={setFlowState}
-      />
       <AnimatePresence>
+        {flowState !== 'EVENTBRITE' && (
+          <MainCalculator
+            key="main-calc"
+            goal={goal}
+            setGoal={setGoal}
+            flowState={flowState}
+            onFlowChange={setFlowState}
+          />
+        )}
         {flowState === 'LOG' && (
           <EmailCapture
             key="email-capture"

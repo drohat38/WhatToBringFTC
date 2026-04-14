@@ -24,12 +24,8 @@ function MainCalculator({ goal, setGoal, flowState, onFlowChange }) {
   // Derived during render — no effect needed (rerender-derived-state-no-effect)
   const req = getReq(goal)
 
-  // In EVENTBRITE state the success card is the only content — don't render
-  // the calculator shell at all or it leaves a tall empty div behind
-  if (flowState === 'EVENTBRITE') return null
-
   return (
-    <motion.div id="view-main" layout>
+    <motion.div id="view-main" layout exit={{ opacity: 0, transition: { duration: 0.2 } }}>
       <AnimatePresence mode="wait">
         {flowState === 'PLAN' ? (
           <motion.div
