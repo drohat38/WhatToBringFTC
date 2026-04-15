@@ -40,19 +40,19 @@ function App() {
 
   return (
     <div id="app-shell">
-      <AnimatePresence>
-        {flowState !== 'EVENTBRITE' && (
+      <AnimatePresence mode="wait">
+        {flowState === 'PLAN' && (
           <MainCalculator
             key="main-calc"
             goal={goal}
             setGoal={setGoal}
-            flowState={flowState}
             onFlowChange={setFlowState}
           />
         )}
         {flowState === 'LOG' && (
           <EmailCapture
             key="email-capture"
+            goal={goal}
             onFlowChange={setFlowState}
             onLogSubmit={handleLogSubmit}
           />

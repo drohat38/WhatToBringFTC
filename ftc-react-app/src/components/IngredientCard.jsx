@@ -11,25 +11,23 @@ function IngredientCard({ item, qty, unit }) {
   }
 
   return (
-    <div className="ic" role="listitem">
-      <div className="ic-img">
+    <div className="ic-pill" role="listitem">
+      <div className="ic-big-img">
         <img
           ref={imgRef}
           src={item.img}
           alt={item.name}
           loading="lazy"
-          width="40"
-          height="40"
           onLoad={handleImageLoad}
         />
       </div>
 
-      <div className="ic-body">
+      <div className="ic-details">
         <p className="ic-name">{item.name}</p>
         <p className="ic-hint">{item.hint}</p>
       </div>
 
-      <div className="ic-qty">
+      <div className="ic-qty-wrap">
         <span className="ic-num">{qty}</span>
         <span className="ic-unit">{unit}</span>
       </div>

@@ -15,14 +15,14 @@ function buildGroceryText(goal, cityName) {
     'Goal: ' + goal + ' sandwiches (~' + Math.round(goal / 2) + ' families)',
     '',
     '— SANDWICHES —',
-    'Sliced Bread     ' + r.bread   + (r.bread   === 1 ? ' loaf'   : ' loaves'),
-    'Deli Meat        ' + r.meat    + ' oz',
-    'Sliced Cheese    ' + r.cheese  + (r.cheese  === 1 ? ' slice'  : ' slices'),
+    'Sliced Bread     ' + r.bread + (r.bread === 1 ? ' loaf' : ' loaves'),
+    'Deli Meat        ' + r.meat + ' oz',
+    'Sliced Cheese    ' + r.cheese + (r.cheese === 1 ? ' slice' : ' slices'),
     'Yellow Mustard   ' + r.mustard + (r.mustard === 1 ? ' bottle' : ' bottles'),
-    'Sandwich Bags    ' + r.bags    + (r.bags    === 1 ? ' box'    : ' boxes'),
+    'Sandwich Bags    ' + r.bags + (r.bags === 1 ? ' box' : ' boxes'),
     '',
     '— ALSO BRING —',
-    'Chips            ' + r.chips      + (r.chips      === 1 ? ' bag' : ' bags') + ' (full-size)',
+    'Chips            ' + r.chips + (r.chips === 1 ? ' bag' : ' bags') + ' (full-size)',
     'Tangerines       ' + r.tangerines + (r.tangerines === 1 ? ' bag' : ' bags') + ' · 3 lb',
     '',
     'feedthecity.org | tangocharities.org',
@@ -110,30 +110,30 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
     try {
       await document.fonts.ready
 
-      const W      = 900
-      const PAD    = 52
+      const W = 900
+      const PAD = 52
       const RADIUS = 16
 
       const rows = [
-        { label: 'Sliced Bread',      qty: r.bread      + (r.bread      === 1 ? ' loaf'    : ' loaves')   },
-        { label: 'Deli Meat',         qty: r.meat        + ' oz'                                            },
-        { label: 'Sliced Cheese',     qty: r.cheese      + (r.cheese     === 1 ? ' slice'   : ' slices')   },
-        { label: 'Yellow Mustard',    qty: r.mustard     + (r.mustard    === 1 ? ' bottle'  : ' bottles')  },
-        { label: 'Sandwich Bags',     qty: r.bags        + (r.bags       === 1 ? ' box'     : ' boxes')    },
-        { label: 'Chips',             qty: r.chips       + (r.chips      === 1 ? ' full-size bag' : ' full-size bags') },
-        { label: 'Tangerines (3 lb)', qty: r.tangerines  + (r.tangerines === 1 ? ' bag'     : ' bags')     },
+        { label: 'Sliced Bread', qty: r.bread + (r.bread === 1 ? ' loaf' : ' loaves') },
+        { label: 'Deli Meat', qty: r.meat + ' oz' },
+        { label: 'Sliced Cheese', qty: r.cheese + (r.cheese === 1 ? ' slice' : ' slices') },
+        { label: 'Yellow Mustard', qty: r.mustard + (r.mustard === 1 ? ' bottle' : ' bottles') },
+        { label: 'Sandwich Bags', qty: r.bags + (r.bags === 1 ? ' box' : ' boxes') },
+        { label: 'Chips', qty: r.chips + (r.chips === 1 ? ' full-size bag' : ' full-size bags') },
+        { label: 'Tangerines (3 lb)', qty: r.tangerines + (r.tangerines === 1 ? ' bag' : ' bags') },
       ]
 
-      const HEADER_H  = 140
-      const ROW_H     = 62
-      const BODY_H    = PAD + rows.length * ROW_H + PAD / 2
-      const FOOTER_H  = 56
+      const HEADER_H = 140
+      const ROW_H = 62
+      const BODY_H = PAD + rows.length * ROW_H + PAD / 2
+      const FOOTER_H = 56
       const OUTER_PAD = 24 // space around the card
-      const CARD_H    = HEADER_H + BODY_H + FOOTER_H
-      const H         = CARD_H + OUTER_PAD * 2
+      const CARD_H = HEADER_H + BODY_H + FOOTER_H
+      const H = CARD_H + OUTER_PAD * 2
 
       const canvas = document.createElement('canvas')
-      canvas.width  = W
+      canvas.width = W
       canvas.height = H
       const ctx = canvas.getContext('2d')
 
@@ -186,7 +186,7 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       const HX = CX + 8 + PAD / 2
 
       // "Shopping List" in Anton-style (bold serif)
-      ctx.font      = 'bold 36px serif'
+      ctx.font = 'bold 36px serif'
       ctx.fillStyle = '#003366'
       ctx.textAlign = 'left'
       ctx.fillText('Shopping List', HX, CY + 48)
@@ -197,19 +197,19 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       if (chapter?.name) metaParts.push(chapter.name)
       if (chapter?.week) metaParts.push(weekLabels[chapter.week - 1] + ' Saturday')
       if (metaParts.length) {
-        ctx.font      = '700 14px sans-serif'
+        ctx.font = '700 14px sans-serif'
         ctx.fillStyle = '#FF6500'
         ctx.fillText(metaParts.join('  ·  '), HX, CY + 74)
       }
 
       // Sandwich count (muted)
-      ctx.font      = '400 13px sans-serif'
+      ctx.font = '400 13px sans-serif'
       ctx.fillStyle = '#9CA3AF'
       ctx.fillText('Supplies for ' + goal + ' sandwiches', HX, CY + 96)
 
       // Divider below header
       ctx.strokeStyle = '#E5E7EB'
-      ctx.lineWidth   = 1
+      ctx.lineWidth = 1
       ctx.beginPath()
       ctx.moveTo(CX + 8, CY + HEADER_H)
       ctx.lineTo(CX + CW, CY + HEADER_H)
@@ -223,7 +223,7 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
         // Row divider (skip first)
         if (i > 0) {
           ctx.strokeStyle = '#E5E7EB'
-          ctx.lineWidth   = 1
+          ctx.lineWidth = 1
           ctx.beginPath()
           ctx.moveTo(HX, rowY)
           ctx.lineTo(CX + CW - 24, rowY)
@@ -234,19 +234,19 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
         const circleX = HX + 11
         const circleY = midY - 6
         ctx.strokeStyle = '#D1D5DB'
-        ctx.lineWidth   = 1.5
+        ctx.lineWidth = 1.5
         ctx.beginPath()
         ctx.arc(circleX, circleY, 10, 0, Math.PI * 2)
         ctx.stroke()
 
         // Item name
-        ctx.font      = '600 18px sans-serif'
+        ctx.font = '600 18px sans-serif'
         ctx.fillStyle = '#1A1A1A'
         ctx.textAlign = 'left'
         ctx.fillText(row.label, HX + 32, midY)
 
         // Quantity (Anton-style bold, orange)
-        ctx.font      = 'bold 20px serif'
+        ctx.font = 'bold 20px serif'
         ctx.fillStyle = '#FF6500'
         ctx.textAlign = 'right'
         ctx.fillText(row.qty, CX + CW - 28, midY)
@@ -255,13 +255,13 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       // ── Footer ──
       const footerY = CY + HEADER_H + BODY_H
       ctx.strokeStyle = '#E5E7EB'
-      ctx.lineWidth   = 1
+      ctx.lineWidth = 1
       ctx.beginPath()
       ctx.moveTo(CX + 8, footerY)
       ctx.lineTo(CX + CW, footerY)
       ctx.stroke()
 
-      ctx.font      = '400 12px sans-serif'
+      ctx.font = '400 12px sans-serif'
       ctx.fillStyle = '#9CA3AF'
       ctx.textAlign = 'center'
       ctx.fillText('tangocharities.org/feed-the-city', W / 2, footerY + FOOTER_H / 2 + 5)

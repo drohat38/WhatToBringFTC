@@ -132,6 +132,14 @@ window.parent.postMessage({ type: 'ftc:resize', height: document.body.scrollHeig
 
 5. **Navy (`#003366`) is for canvas/image outputs only** (the Save Image card header/footer). Never use navy as a page background or section background in the iframe UI.
 
+### 🧠 REQUIRED: Cognitive UI/UX Logic
+You (Claude/Antigravity) must act as a Senior UI/UX Director. Do not be a blind code executor. 
+Before writing UI code, you MUST evaluate the Progressive Disclosure Logic:
+- **Does it make sense?** (e.g. Do not show a 'You're all set' checkmark *before* a user actually clicks 'Register'. Do not show a 'Receipt summary' before a user locks in their data).
+- **Is the hierarchy obvious?** (e.g. The primary action should always be the most visually dominant element. Do not make 'Copy List' a ghost button if it's the core feature).
+- **Is the aesthetic premium?** Enforce 3D rounded pill-cards, clean drop shadows, crisp sans-serif fonts, and massive product images instead of clunky data tables.
+- If the user asks for a UI tweak that breaks cognitive logic, **push back and propose the structurally sound alternative**.
+
 ---
 
 ## What to Bring — Official Descriptions

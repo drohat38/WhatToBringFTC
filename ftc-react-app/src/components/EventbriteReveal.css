@@ -29,6 +29,7 @@
   background: rgba(251, 251, 253, 0.5);
   text-align: center;
 }
+
 .receipt-headline {
   font-family: 'Anton', sans-serif;
   font-size: 28px;
@@ -38,6 +39,7 @@
   line-height: 1.1;
   margin-bottom: 6px;
 }
+
 .receipt-meta {
   font-size: 11px;
   font-weight: 800;
@@ -46,12 +48,14 @@
   color: var(--orange);
   margin-bottom: 6px;
 }
+
 .receipt-sub-goal {
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: var(--muted);
 }
+
 .receipt-sub-goal span {
   color: var(--navy);
   font-weight: 800;
@@ -63,6 +67,7 @@
   padding: 6px 0;
   margin: 0;
 }
+
 .receipt-item {
   display: flex;
   justify-content: space-between;
@@ -73,8 +78,14 @@
   transition: background 0.12s;
   -webkit-tap-highlight-color: transparent;
 }
-.receipt-item:last-child { border-bottom: none; }
-.receipt-item:hover { background: rgba(255, 101, 0, 0.03); }
+
+.receipt-item:last-child {
+  border-bottom: none;
+}
+
+.receipt-item:hover {
+  background: rgba(255, 101, 0, 0.03);
+}
 
 .ri-left {
   display: flex;
@@ -88,6 +99,7 @@
   transition: color 0.18s;
   flex-shrink: 0;
 }
+
 .item-check.checked {
   color: var(--orange);
 }
@@ -104,6 +116,7 @@
   color: var(--muted);
   text-decoration: line-through;
 }
+
 .receipt-item.checked .ri-qty {
   opacity: 0.45;
 }
@@ -127,7 +140,7 @@
   flex: 1;
   height: 50px;
   background: var(--white);
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 9px;
   box-shadow: 0 2px 8px rgba(0, 51, 102, 0.04);
   font-family: 'Open Sans', sans-serif;
@@ -141,10 +154,29 @@
   gap: 6px;
   transition: all 0.2s;
 }
-.eb-util-btn:hover { background: rgba(255,101,0,0.04); border-color: rgba(255,101,0,0.2); color: var(--orange); }
-.eb-util-btn:active { transform: scale(0.96); }
-.eb-util-btn:disabled { opacity: 0.55; cursor: default; transform: none; box-shadow: none; }
-.eb-util-btn.copied { background: var(--success); color: var(--white); border-color: var(--success); }
+
+.eb-util-btn:hover {
+  background: rgba(255, 101, 0, 0.04);
+  border-color: rgba(255, 101, 0, 0.2);
+  color: var(--orange);
+}
+
+.eb-util-btn:active {
+  transform: scale(0.96);
+}
+
+.eb-util-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.eb-util-btn.copied {
+  background: var(--success);
+  color: var(--white);
+  border-color: var(--success);
+}
 
 /* ── Final Eventbrite Call to Action ── */
 .eb-primary-cta {
@@ -165,8 +197,15 @@
   box-shadow: 0 4px 14px rgba(255, 101, 0, 0.28);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.eb-primary-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 101, 0, 0.35); }
-.eb-primary-cta:active { transform: scale(0.96); }
+
+.eb-primary-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 101, 0, 0.35);
+}
+
+.eb-primary-cta:active {
+  transform: scale(0.96);
+}
 
 /* ── Reset link ── */
 .eb-reset {
@@ -185,4 +224,7 @@
   padding: 14px 0 6px;
   transition: color 0.15s;
 }
-.eb-reset:hover { color: var(--navy); }
+
+.eb-reset:hover {
+  color: var(--navy);
+}

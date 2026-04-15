@@ -10,17 +10,10 @@ function EmailCapture({ goal, onFlowChange, onLogSubmit }) {
   const [citySlug, setCitySlug] = useState('')
   const [error, setError] = useState('')
 
-  // Combobox state
-  const [cityQuery, setCityQuery] = useState('')
-  const [cityOpen, setCityOpen]   = useState(false)
   const allCities = useMemo(
     () => CHAPTERS_BY_WEEK.flatMap(g => g.chapters),
     []
   )
-  const selectedCity = allCities.find(c => c.slug === citySlug) ?? null
-  const cityOptions  = cityQuery.trim()
-    ? allCities.filter(c => c.name.toLowerCase().includes(cityQuery.toLowerCase()))
-    : allCities
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -50,35 +43,18 @@ function EmailCapture({ goal, onFlowChange, onLogSubmit }) {
       <form className="ec-form" onSubmit={handleSubmit} noValidate>
         <div className="ec-field">
           <label className="ec-field-label" htmlFor="ec-city">City</label>
-          <div className="ec-combobox">
-            <input
+          <div className="ec-select-wrapper">
+            <select
               id="ec-city"
-              className="ec-combobox-input"
-              type="text"
-              placeholder="Search your city…"
-              autoComplete="off"
-              value={selectedCity ? selectedCity.name : cityQuery}
-              onFocus={() => { setCityOpen(true); if (selectedCity) setCityQuery('') }}
-              onChange={e => { setCityQuery(e.target.value); setCitySlug(''); setCityOpen(true) }}
-              onBlur={() => setTimeout(() => setCityOpen(false), 150)}
-            />
-            {cityOpen && cityOptions.length > 0 && (
-              <div className="ec-city-list" role="listbox">
-                {cityOptions.slice(0, 8).map(c => (
-                  <button
-                    key={c.slug}
-                    type="button"
-                    role="option"
-                    className={`ec-city-opt${c.slug === citySlug ? ' active' : ''}`}
-                    onMouseDown={() => {
-                      setCitySlug(c.slug); setCityQuery(''); setCityOpen(false); setError('')
-                    }}
-                  >
-                    {c.name}
-                  </button>
-                ))}
-              </div>
-            )}
+              className={`ec-select-input ${!citySlug ? 'placeholder-visible' : ''}`}
+              value={citySlug}
+              onChange={e => { setCitySlug(e.target.value); setError('') }}
+            >
+              <option value="" disabled>Select your city…</option>
+              {allCities.map(c => (
+                <option key={c.slug} value={c.slug}>{c.name}</option>
+              ))}
+            </select>
           </div>
         </div>
 

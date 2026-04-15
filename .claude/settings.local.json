@@ -21,7 +21,20 @@
       "Bash(node _screenshot_main.mjs)",
       "Bash(node \"C:/Users/anand/OneDrive/Documents/ftc-planner-finalversion/_screenshot.mjs\")",
       "Skill(update-config)",
-      "WebFetch(domain:www.tangocharities.org)"
+      "WebFetch(domain:www.tangocharities.org)",
+      "Bash(npx vite:*)",
+      "Bash(start /B npx vite preview --port 3001)",
+      "Bash(npm run:*)",
+      "Bash(node _capture_audit.js)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)",
+      "Bash(node -e \"require\\('playwright'\\)\")",
+      "Bash(node _capture_screenshots.js)",
+      "Bash(npx playwright:*)",
+      "Bash(python3 -c ':*)",
+      "Bash(node \"c:/Users/anand/OneDrive/Documents/ftc-planner-finalversion/_write_critique.js\")",
+      "Bash(node _cap.js)",
+      "Bash(npx --yes vite build --outDir ../dist)",
+      "Bash(curl -s http://localhost:54668/dist/)"
     ]
   }
 }
