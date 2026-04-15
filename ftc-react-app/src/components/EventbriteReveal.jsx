@@ -40,33 +40,11 @@ function IconArrowRight() {
   )
 }
 
-// Circular checkbox — empty or checked
-function IconCircle({ checked }) {
-  if (checked) {
-    return (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
-        className="item-check checked">
-        <circle cx="12" cy="12" r="10" fill="currentColor" />
-        <polyline points="9 12 11 14 15 10" stroke="white" strokeWidth="2.5" fill="none" />
-      </svg>
-    )
-  }
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
-      className="item-check">
-      <circle cx="12" cy="12" r="10"></circle>
-    </svg>
-  )
-}
-
 function EventbriteReveal({ goal, email, citySlug, onReset }) {
   const chapter = getChapter(citySlug)
   const prefillUrl = `${BASE_EB_URL}?email=${encodeURIComponent(email)}`
   const [copied, setCopied] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [checked, setChecked] = useState({})
 
   const r = getReq(goal)
   const allItems = [...ITEMS, ...ALSO_ITEMS]
@@ -74,10 +52,6 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
   useEffect(() => {
     window.parent.postMessage({ type: 'ftc:scrollToRegistration' }, '*')
   }, [])
-
-  function toggleItem(key) {
-    setChecked(prev => ({ ...prev, [key]: !prev[key] }))
-  }
 
   function flashCopied() {
     setCopied(true)
@@ -298,9 +272,9 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      {/* ── Native Shopping List Card ── */}
-      <div className="receipt-card">
-        <div className="receipt-header-block">
+      {/* ── Tabbed Receipt Presentation ── */}
+      <div className="receipt-wrapper">
+        <div className="receipt-back-tab">
           <h2 className="receipt-headline">Shopping List</h2>
           {chapter && (
             <p className="receipt-meta">
@@ -310,21 +284,27 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
           <p className="receipt-sub-goal">Supplies for <span>{goal}</span> sandwiches</p>
         </div>
 
-        <ul className="receipt-list">
-          {allItems.map(item => (
-            <li
-              key={item.key}
-              className={`receipt-item${checked[item.key] ? ' checked' : ''}`}
-              onClick={() => toggleItem(item.key)}
-            >
-              <div className="ri-left">
-                <IconCircle checked={!!checked[item.key]} />
+        <motion.div 
+          className="receipt-front-tab"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+          <ul className="receipt-list">
+            {allItems.map((item, index) => (
+              <motion.li
+                key={item.key}
+                className="receipt-bubble"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + index * 0.04, duration: 0.3 }}
+              >
                 <span className="ri-name">{item.name}</span>
-              </div>
-              <span className="ri-qty">{r[item.key]} {getUnit(item, r[item.key])}</span>
-            </li>
-          ))}
-        </ul>
+                <span className="ri-qty">{r[item.key]} {getUnit(item, r[item.key])}</span>
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
       </div>
 
       {/* ── Action Buttons ── */}

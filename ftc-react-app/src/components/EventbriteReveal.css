@@ -3,31 +3,28 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 .eb-reveal {
-  padding: 0 8px 40px;
-  max-width: 440px;
-  width: calc(100% - 16px);
+  padding: 24px 12px 40px; /* Shifted down, increased padding */
+  max-width: 500px; /* Wider */
+  width: calc(100% - 24px);
   margin: 0 auto;
   text-align: center;
 }
 
-/* ── Native Shopping List Card ── */
-.receipt-card {
-  background: var(--white);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+/* ── Tabbed Layout Wrapper ── */
+.receipt-wrapper {
+  margin-bottom: 28px;
+  position: relative;
   border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 51, 102, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  padding: 0;
-  text-align: left;
-  margin-bottom: 24px;
 }
 
-/* ── Header Block ── */
-.receipt-header-block {
-  padding: 24px 20px 18px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(251, 251, 253, 0.5);
+/* The Rectangular Back Tab (Header) */
+.receipt-back-tab {
+  background: var(--white);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 16px 16px 4px 4px; /* Mostly square on bottom */
+  padding: 28px 20px 48px; /* Extra bottom padding so it sits reliably under the front tab */
   text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 51, 102, 0.04);
 }
 
 .receipt-headline {
@@ -61,72 +58,51 @@
   font-weight: 800;
 }
 
-/* ── List Rows ── */
-.receipt-list {
-  list-style: none;
-  padding: 6px 0;
-  margin: 0;
+/* The Curved Front Tab (List Container) */
+.receipt-front-tab {
+  background: #F8F9FA; /* Slight off-white to contrast the pure white bubbles */
+  border-top: 1px solid rgba(255,255,255,0.8);
+  border-radius: 32px 32px 16px 16px; /* Heavy top curve as requested */
+  margin-top: -32px; /* Pulls up over the back tab */
+  padding: 24px 16px 16px;
+  box-shadow: 0 -8px 24px rgba(0,0,0,0.06); /* Shadow casting up onto the header */
+  position: relative;
+  z-index: 2;
 }
 
-.receipt-item {
+.receipt-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Distinct separation between bubbles */
+}
+
+/* ── Glass Bubble Items ── */
+.receipt-bubble {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  cursor: pointer;
-  transition: background 0.12s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.receipt-item:last-child {
-  border-bottom: none;
-}
-
-.receipt-item:hover {
-  background: rgba(255, 101, 0, 0.03);
-}
-
-.ri-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* Circle states */
-.item-check {
-  color: #D1D5DB;
-  transition: color 0.18s;
-  flex-shrink: 0;
-}
-
-.item-check.checked {
-  color: var(--orange);
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 16px; /* Liquid glass pill shape */
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.03);
 }
 
 .ri-name {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--text);
-  transition: color 0.18s;
-}
-
-/* Checked item: strikethrough + muted */
-.receipt-item.checked .ri-name {
-  color: var(--muted);
-  text-decoration: line-through;
-}
-
-.receipt-item.checked .ri-qty {
-  opacity: 0.45;
 }
 
 .ri-qty {
-  font-family: 'Anton', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 15px;
+  font-weight: 600; /* Soft bold, unbolded from Anton */
   color: var(--orange);
-  letter-spacing: 0.02em;
-  transition: opacity 0.18s;
 }
 
 /* ── Grocery action buttons ── */
