@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build": "cd ftc-react-app && npm install && npm run build && cd .. && rm -rf dist && cp -r ftc-react-app/dist dist"
+  },
   "dependencies": {
     "playwright": "^1.59.1"
   }
