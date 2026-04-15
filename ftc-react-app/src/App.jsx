@@ -10,17 +10,17 @@ function App() {
   const [goal, setGoal] = useState(30)
   const [logData, setLogData] = useState({ email: '', city: '' })
 
-  // Fire ftc:resize after every state change so the Wix iframe stays the right height.
-  // 420ms delay lets Framer Motion finish its enter animation before we measure.
+  // Fire ftc:resize whenever the document body height changes.
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const ro = new ResizeObserver(() => {
       window.parent.postMessage(
         { type: 'ftc:resize', height: document.body.scrollHeight },
         '*'
       )
-    }, 420)
-    return () => clearTimeout(timer)
-  }, [flowState])
+    })
+    ro.observe(document.body)
+    return () => ro.disconnect()
+  }, [])
 
   function handleLogSubmit(email, citySlug) {
     // Persist — same schema as legacy script.js: { meals, date, chapter }
