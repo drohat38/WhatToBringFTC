@@ -1,0 +1,188 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   EmailCapture — city + email form, LOG flow state
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.email-capture {
+  padding: 36px 20px 40px;
+  max-width: 420px;
+  width: calc(100% - 28px);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ec-label {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+/* ── Confirmation paragraph (bold, navy — celebrates the goal) ── */
+.ec-confirm {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.55;
+  max-width: 320px;
+  margin: 0 auto 6px;
+}
+.ec-confirm strong {
+  color: var(--orange);
+}
+
+/* ── Instruction paragraph (muted, small — subordinate guidance) ── */
+.ec-instruction {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 300px;
+  margin: 0 auto 22px;
+}
+
+/* ── Form ── */
+.ec-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ec-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.ec-field-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  padding-left: 2px;
+}
+
+/* ── City combobox ── */
+.ec-combobox {
+  position: relative;
+  width: 100%;
+}
+
+.ec-combobox-input {
+  width: 100%;
+  height: 52px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 0 16px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ec-combobox-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255, 101, 0, 0.1);
+}
+
+.ec-city-list {
+  /* Accordion Mode: Push content down instead of absolute overlay */
+  margin-top: 4px;
+  width: 100%;
+  max-height: 260px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.05);
+  overflow-y: auto;
+}
+
+.ec-city-opt {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 16px;
+  text-align: left;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.ec-city-opt:last-child { border-bottom: none; }
+.ec-city-opt:hover,
+.ec-city-opt.active {
+  background: rgba(255, 101, 0, 0.06);
+  color: var(--orange);
+}
+
+/* ── Email input ── */
+.ec-error {
+  font-size: 12px;
+  color: var(--error);
+  font-weight: 600;
+  text-align: left;
+  margin: -4px 0;
+}
+
+.ec-input {
+  height: 52px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 0 16px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ec-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255, 101, 0, 0.1);
+}
+
+.ec-submit {
+  height: 54px;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  border-radius: 9px;
+  font-family: 'Anton', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.18s;
+}
+
+.ec-submit:hover { opacity: 0.87; }
+.ec-submit:active { opacity: 0.75; }
+
+/* ── Back link ── */
+.ec-back {
+  display: block;
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: 'Open Sans', sans-serif;
+  padding: 6px 0;
+  transition: color 0.15s;
+}
+
+.ec-back:hover { color: var(--navy); }

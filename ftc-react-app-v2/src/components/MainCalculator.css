@@ -1,0 +1,280 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   MainCalculator — layout, goal zone, section headers, ingredient grid, CTA
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Main view background ── */
+#view-main {
+  background: var(--white);
+}
+
+/* ── Goal section ── */
+.goal-section {
+  padding: 32px 20px 20px;
+  text-align: center;
+}
+
+.goal-eyebrow {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  color: var(--navy);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+
+.goal-ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+}
+
+.g-btn {
+  width: 56px;
+  height: 56px;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(255, 101, 0, 0.28);
+  transition: background 0.18s var(--ease), transform 0.14s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.g-btn:hover {
+  background: var(--navy);
+  box-shadow: 0 4px 14px rgba(0, 51, 102, 0.22);
+}
+
+.g-btn:active {
+  transform: scale(0.92);
+}
+
+.g-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.g-input {
+  font-family: 'Anton', sans-serif;
+  font-size: 80px;
+  color: var(--orange);
+  line-height: 1;
+  border: none;
+  border-bottom: 2px solid rgba(255, 101, 0, 0.2);
+  background: transparent;
+  text-align: center;
+  width: 160px;
+  outline: none;
+  -moz-appearance: textfield;
+  cursor: text;
+  transition: border-color 0.2s;
+}
+
+.g-input::-webkit-outer-spin-button,
+.g-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.g-input:focus {
+  border-bottom-color: rgba(255, 101, 0, 0.3);
+}
+
+.g-unit {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.g-nudge {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.g-nudge strong {
+  color: var(--text);
+}
+
+/* ── Section headers ── */
+.sec-hd {
+  padding: 24px 20px 0;
+  text-align: center;
+}
+
+.sec-ttl {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--navy);
+}
+
+.sec-rule {
+  width: 32px;
+  height: 3px;
+  background: var(--orange);
+  margin: 10px auto 16px; /* Added 16px margin bottom */
+  border-radius: 2px;
+}
+
+/* ── Ingredient list rows ── */
+.ig {
+  padding: 0 20px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.ig-5,
+.ig-2 {
+  /* rows stack naturally — layout handled by .ic */
+}
+
+/* ── CTA block ── */
+.cta-block {
+  border-top: 1px solid var(--border);
+  padding: 30px 20px 40px;
+  text-align: center;
+  max-width: 560px;
+  width: calc(100% - 28px);
+  margin: 16px auto 0;
+}
+
+.cta-stmt {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  color: var(--navy);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.cta-stmt .sn {
+  color: var(--orange);
+}
+
+.cta-sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 320px;
+  margin: 0 auto 14px;
+}
+
+.cta-blurb {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.65;
+  max-width: 340px;
+  margin: 0 auto 22px;
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 12px rgba(0, 51, 102, 0.06);
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.cta-primary {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: 54px;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  border-radius: 9px;
+  font-family: 'Anton', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin: 0 auto 16px;
+  transition: opacity 0.18s;
+}
+
+.cta-primary:hover {
+  opacity: 0.87;
+}
+
+/* ── Receipt card (LOG state) ── */
+.receipt-card {
+  margin: 20px auto 0;
+  max-width: 420px;
+  width: calc(100% - 28px);
+  padding: 36px 20px 24px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 20px rgba(0, 51, 102, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.receipt-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: var(--white);
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.receipt-headline {
+  font-family: 'Anton', sans-serif;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.receipt-num {
+  color: var(--orange);
+}
+
+.receipt-list {
+  list-style: none;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  text-align: left;
+}
+
+.receipt-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.ri-name {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.ri-qty {
+  color: var(--orange);
+  font-family: 'Anton', sans-serif;
+  font-size: 15px;
+}
