@@ -2,8 +2,11 @@
 node_modules/
 dist/
 /ftc-react-app/dist/
+/ftc-react-app-v2/dist/
 
-# Temp screenshots generated during development — never commit these
+# Temp screenshots and debug images — never commit these
+**/_*.png
+**/_*.jpg
 _shot*.png
 _iter*.png
 _check*.png
