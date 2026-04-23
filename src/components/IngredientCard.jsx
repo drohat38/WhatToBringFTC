@@ -10,6 +10,12 @@ function IngredientCard({ item, qty, unit }) {
     if (imgRef.current) imgRef.current.classList.add('loaded')
   }
 
+  // If the image 404s or the network blocks it, reveal the <img> anyway so
+  // the alt text / broken-image icon shows instead of a silent empty tile.
+  function handleImageError() {
+    if (imgRef.current) imgRef.current.classList.add('loaded')
+  }
+
   return (
     <div className="ic-pill" role="listitem">
       <div className="ic-big-img">
@@ -19,6 +25,7 @@ function IngredientCard({ item, qty, unit }) {
           alt={item.name}
           loading="lazy"
           onLoad={handleImageLoad}
+          onError={handleImageError}
         />
       </div>
 

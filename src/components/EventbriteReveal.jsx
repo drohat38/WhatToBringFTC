@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { getChapter } from '../data/chapters'
 import { getReq, getUnit, ITEMS, ALSO_ITEMS } from '../data/ingredients'
 import './EventbriteReveal.css'
-
-const BASE_EB_URL = 'https://www.eventbrite.com/e/feed-the-city-registration'
 
 function buildGroceryText(goal, cityName) {
   const r = getReq(goal)
@@ -24,40 +22,33 @@ function buildGroceryText(goal, cityName) {
     'Chips            ' + r.chips + (r.chips === 1 ? ' bag' : ' bags') + ' (full-size)',
     'Tangerines       ' + r.tangerines + (r.tangerines === 1 ? ' bag' : ' bags') + ' · 3 lb',
     '',
-    'feedthecity.org | tangocharities.org',
+    'tangocharities.org/feed-the-city',
   ].filter(l => l !== null).join('\n')
 }
 
-function IconArrowRight() {
+function IconArrowDown() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <line x1="5" y1="12" x2="19" y2="12"></line>
-      <polyline points="12 5 19 12 12 19"></polyline>
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <polyline points="19 12 12 19 5 12"></polyline>
     </svg>
   )
 }
 
-
-
-function EventbriteReveal({ goal, email, citySlug, onReset }) {
-  // Extract chapter from URL parameter if present
+function EventbriteReveal({ goal, onReset }) {
   const urlParams = new URLSearchParams(window.location.search)
-  const chapterParam = urlParams.get('chapter')
-  const activeCitySlug = chapterParam || citySlug
-  const chapter = getChapter(activeCitySlug)
+  const chapter = getChapter(urlParams.get('chapter'))
 
   const [copied, setCopied] = useState(false)
   const [saving, setSaving] = useState(false)
 
-  const prefillUrl = `${BASE_EB_URL}?email=${encodeURIComponent(email)}`
-
   const r = getReq(goal)
   const allItems = [...ITEMS, ...ALSO_ITEMS]
 
-  useEffect(() => {
+  function handleRegister() {
     window.parent.postMessage({ type: 'ftc:scrollToRegistration' }, '*')
-  }, [])
+  }
 
   function flashCopied() {
     setCopied(true)
@@ -83,14 +74,17 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
     document.body.removeChild(ta)
   }
 
-
-
   async function handleSaveImage() {
     setSaving(true)
     await new Promise(res => setTimeout(res, 40))
 
     try {
-      await document.fonts.ready
+      // Wait for web fonts but don't hang the UI if document.fonts.ready
+      // never resolves (rare, but observed on some embedded browsers).
+      await Promise.race([
+        document.fonts.ready,
+        new Promise(res => setTimeout(res, 1500)),
+      ])
 
       const W = 900
       const PAD = 52
@@ -110,7 +104,7 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       const ROW_H = 62
       const BODY_H = PAD + rows.length * ROW_H + PAD / 2
       const FOOTER_H = 56
-      const OUTER_PAD = 24 // space around the card
+      const OUTER_PAD = 24
       const CARD_H = HEADER_H + BODY_H + FOOTER_H
       const H = CARD_H + OUTER_PAD * 2
 
@@ -119,11 +113,9 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       canvas.height = H
       const ctx = canvas.getContext('2d')
 
-      // Page background — very light gray
       ctx.fillStyle = '#F2F4F7'
       ctx.fillRect(0, 0, W, H)
 
-      // ── Card (white, rounded) ──
       const CX = OUTER_PAD
       const CY = OUTER_PAD
       const CW = W - OUTER_PAD * 2
@@ -147,7 +139,6 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       ctx.stroke()
       ctx.restore()
 
-      // ── Orange left accent bar ──
       ctx.save()
       ctx.beginPath()
       ctx.moveTo(CX + RADIUS, CY)
@@ -162,24 +153,23 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       ctx.fill()
       ctx.restore()
 
-      // ── Header ──
       const HX = CX + 8 + PAD / 2
-      ctx.font = 'bold 36px serif'
+      ctx.font = '400 36px Anton, "Arial Narrow", sans-serif'
       ctx.fillStyle = '#003366'
       ctx.textAlign = 'left'
-      ctx.fillText('Shopping List', HX, CY + 48)
+      ctx.fillText('SHOPPING LIST', HX, CY + 48)
 
       const weekLabels = ['First', 'Second', 'Third', 'Fourth']
       const metaParts = []
       if (chapter?.name) metaParts.push(chapter.name)
       if (chapter?.week) metaParts.push(weekLabels[chapter.week - 1] + ' Saturday')
       if (metaParts.length) {
-        ctx.font = '700 14px sans-serif'
+        ctx.font = '700 14px "Open Sans", Arial, sans-serif'
         ctx.fillStyle = '#FF6500'
         ctx.fillText(metaParts.join('  ·  '), HX, CY + 74)
       }
 
-      ctx.font = '400 13px sans-serif'
+      ctx.font = '400 13px "Open Sans", Arial, sans-serif'
       ctx.fillStyle = '#9CA3AF'
       ctx.fillText('Supplies for ' + goal + ' sandwiches', HX, CY + 96)
 
@@ -190,7 +180,6 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       ctx.lineTo(CX + CW, CY + HEADER_H)
       ctx.stroke()
 
-      // ── Rows ──
       rows.forEach((row, i) => {
         const rowY = CY + HEADER_H + PAD / 2 + i * ROW_H
         const midY = rowY + ROW_H / 2 + 6
@@ -212,18 +201,17 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
         ctx.arc(circleX, circleY, 10, 0, Math.PI * 2)
         ctx.stroke()
 
-        ctx.font = '600 18px sans-serif'
+        ctx.font = '700 18px "Open Sans", Arial, sans-serif'
         ctx.fillStyle = '#1A1A1A'
         ctx.textAlign = 'left'
         ctx.fillText(row.label, HX + 32, midY)
 
-        ctx.font = 'bold 20px serif'
+        ctx.font = '400 22px Anton, "Arial Narrow", sans-serif'
         ctx.fillStyle = '#FF6500'
         ctx.textAlign = 'right'
         ctx.fillText(row.qty, CX + CW - 28, midY)
       })
 
-      // ── Footer ──
       const footerY = CY + HEADER_H + BODY_H
       ctx.strokeStyle = '#E5E7EB'
       ctx.lineWidth = 1
@@ -232,7 +220,7 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       ctx.lineTo(CX + CW, footerY)
       ctx.stroke()
 
-      ctx.font = '400 12px sans-serif'
+      ctx.font = '400 12px "Open Sans", Arial, sans-serif'
       ctx.fillStyle = '#9CA3AF'
       ctx.textAlign = 'center'
       ctx.fillText('tangocharities.org/feed-the-city', W / 2, footerY + FOOTER_H / 2 + 5)
@@ -269,7 +257,6 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35 }}
     >
-      {/* ── Tabbed Receipt Presentation ── */}
       <div className="receipt-wrapper">
         <div className="receipt-back-tab">
           <h2 className="receipt-headline">Shopping List</h2>
@@ -281,11 +268,11 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
           <p className="receipt-sub-goal">Supplies for <span>{goal}</span> sandwiches</p>
         </div>
 
-        <motion.div 
+        <motion.div
           className="receipt-front-tab"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
         >
           <ul className="receipt-list">
             {allItems.map((item, index) => (
@@ -304,20 +291,15 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
         </motion.div>
       </div>
 
-
-
-      {/* ── Final Eventbrite Registration ── */}
-      <a
+      <button
+        type="button"
         className="eb-primary-cta"
-        href={prefillUrl}
-        target="_blank"
-        rel="noreferrer"
+        onClick={handleRegister}
         style={{ marginBottom: '16px' }}
       >
-        Register Here <IconArrowRight />
-      </a>
+        Register Now <IconArrowDown />
+      </button>
 
-      {/* ── Action Buttons ── */}
       <div className="eb-actions">
         <button
           className={`eb-util-btn${copied ? ' copied' : ''}`}
@@ -344,4 +326,3 @@ function EventbriteReveal({ goal, email, citySlug, onReset }) {
 }
 
 export default EventbriteReveal
-

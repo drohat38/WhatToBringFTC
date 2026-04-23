@@ -164,12 +164,14 @@
   height: 56px;
   background: var(--orange);
   color: var(--white);
+  border: none;
   border-radius: 12px;
   font-family: 'Anton', sans-serif;
   font-size: 18px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
+  cursor: pointer;
   box-shadow: 0 4px 14px rgba(255, 101, 0, 0.28);
   transition: transform 0.2s, box-shadow 0.2s;
 }

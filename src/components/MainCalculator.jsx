@@ -6,23 +6,33 @@ import './MainCalculator.css'
 function MainCalculator({ goal, setGoal, onFlowChange }) {
   // goal/setGoal lifted to App so handleLogSubmit can read goal for ftc_logs
 
-  // Functional setState keeps callbacks stable (rerender-functional-setstate)
+  // Functional setState keeps callbacks stable (rerender-functional-setstate).
+  // Coerce the goal to a number first — it can be '' during keyboard editing.
   function stepGoal(delta) {
-    setGoal(g => Math.max(5, Math.min(500, g + delta)))
+    setGoal(g => {
+      const n = typeof g === 'number' ? g : parseInt(g, 10) || 5
+      return Math.max(5, Math.min(500, n + delta))
+    })
   }
 
+  // Don't clamp during typing — users need to clear the field and type a
+  // multi-digit number without the value snapping to 5 after each keystroke.
+  // Cap only the upper bound so they can't blow out the layout with 9999.
   function handleGoalChange(e) {
-    const val = parseInt(e.target.value, 10)
-    if (!isNaN(val)) setGoal(Math.max(5, Math.min(500, val)))
+    const raw = e.target.value
+    if (raw === '') { setGoal(''); return }
+    const val = parseInt(raw, 10)
+    if (!isNaN(val)) setGoal(Math.min(500, val))
   }
 
+  // Clamp once the user leaves the field.
   function handleGoalBlur(e) {
     const val = parseInt(e.target.value, 10)
     setGoal(isNaN(val) || val < 5 ? 5 : val > 500 ? 500 : val)
   }
 
   // Derived during render — no effect needed (rerender-derived-state-no-effect)
-  const req = getReq(goal)
+  const req = getReq(typeof goal === 'number' ? goal : 5)
 
   return (
     <motion.div id="view-main" exit={{ opacity: 0, transition: { duration: 0.35, delay: 0.1 } }}>
@@ -134,7 +144,15 @@ function MainCalculator({ goal, setGoal, onFlowChange }) {
 
       {/* ── CTA ── */}
       <div className="cta-block">
-        <button className="cta-primary" onClick={() => onFlowChange('EVENTBRITE')}>
+        <button
+          className="cta-primary"
+          onClick={() => {
+            // Safety net: if the user advances while the field is mid-edit,
+            // commit the current value to a valid number first.
+            if (typeof goal !== 'number' || goal < 5) setGoal(5)
+            onFlowChange('EVENTBRITE')
+          }}
+        >
           Get My Shopping List →
         </button>
       </div>
