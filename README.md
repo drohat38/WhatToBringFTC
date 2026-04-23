@@ -1,60 +1,114 @@
-# Feed The City - Volunteer Planner
+# Feed The City — Volunteer Planner
 
-![Project Banner](https://via.placeholder.com/1200x300.png?text=Feed+The+City+-+Tango+Charities) <!-- Add your actual banner image here -->
+A single-page React app that replaces the static "What to Bring" block on every [Tango Charities](https://tangocharities.org) city event page. Volunteers pick a sandwich goal, the tool computes exact ingredient quantities, and one button scrolls the parent Wix page down to the existing Eventbrite embed so they can register.
 
-A modern, frictionless React-based application designed to streamline the volunteer sign-up and planning process for Tango Charities' "Feed the City" events. This intuitive tool helps volunteers calculate ingredient needs, estimate their sandwich contributions, and seamlessly register to participate.
+Designed to live inside a Wix iframe on ~46 city pages. Height and scroll-to-registration are coordinated with the parent page via `postMessage`.
 
-## 🌟 Key Features
+## Flow
 
-* **Interactive Shopping Calculator:** Dynamically calculates exact ingredient quantities needed based on the volunteer's desired sandwich contribution.
-* **Frictionless Experience:** Single-flow, single-page UI built for high conversion.
-* **Responsive "Liquid Glass" UI:** A premium, modern, and engaging design with smooth micro-animations.
-* **Component-Based Architecture:** Built on modern React for scalability and maintainability.
-* **Embedded Ready:** Perfectly optimized to function smoothly as an `iframe` within existing Wix/Squarespace event pages.
+1. **Plan** — pick a sandwich goal; see live-computed quantities for bread, meat, cheese, mustard, bags, chips, tangerines.
+2. **Receipt** — tabbed shopping-list card with the same quantities; Copy / Save-as-Image / Register Now.
+3. **Register Now** — posts `{ type: 'ftc:scrollToRegistration' }` to the parent window, which scrolls the Wix page down to the native Eventbrite embed already on that page.
 
-## 🏗️ Architecture & Tech Stack
+## Tech stack
 
-* **Core:** [React](https://reactjs.org/) (v19) & [Vite](https://vitejs.dev/) for extremely fast development and builds.
-* **Animations:** [Framer Motion](https://www.framer.com/motion/) powering the fluid UI transitions.
-* **Styling:** Vanilla CSS with custom modern properties (Glassmorphism, CSS Gradients, dynamic theming).
-* **Routing:** `react-router-dom` for handling custom city links and embed states.
-* **Hosting:** Fully configured for CI/CD via **Vercel** with Multi-App Monorepo support.
+- **React 19** + **Vite 8**
+- **Framer Motion** for view transitions and staggered list reveals
+- Vanilla CSS (glassmorphism on white; no Tailwind / no component library)
+- Deployed on **Vercel**, auto-deployed on push to `master`
 
-## 🚀 Getting Started (Development)
+## Local development
 
-This repository contains two React applications: `ftc-react-app` (v1 stable) and `ftc-react-app-v2` (next-gen). 
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # writes to dist/
+npm run preview    # serve the built bundle
+```
 
-To run the latest version locally:
+## Iframe integration (Wix)
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/drohat38/WhatToBringFTC.git
-   cd WhatToBringFTC
-   ```
+The planner lives at the site root. Per-city chapter info is passed via a URL param:
 
-2. **Navigate to the target app:**
-   ```bash
-   cd ftc-react-app-v2
-   ```
+```html
+<iframe
+  src="https://<vercel-url>/?chapter=denton-tx"
+  width="100%"
+  height="950"
+  frameborder="0"
+  scrolling="no"
+  allow="clipboard-write; web-share"
+  title="Feed the City — Volunteer Planner">
+</iframe>
+```
 
-3. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+### Required Wix Velo snippet (one per event page)
 
-4. **Start the local development server:**
-   ```bash
-   npm run dev
-   ```
+```js
+$w.onReady(function () {
+  window.addEventListener('message', function (e) {
+    if (!e.data) return
+    if (e.data.type === 'ftc:resize') {
+      $w('#plannerIframe').style.height = e.data.height + 'px'
+    }
+    if (e.data.type === 'ftc:scrollToRegistration') {
+      $w('#eventbriteSection').scrollTo()
+    }
+  })
+})
+```
 
-## 📖 Project Documentation (Wiki)
+Replace `#plannerIframe` and `#eventbriteSection` with the real Wix element IDs.
 
-For deep technical insights, review our documentation files located in the `/docs` folder. These files are designed to serve as the foundation of our eventual GitHub Wiki:
+### Messages emitted by the planner
 
-- [`/docs/PRD.md`](docs/PRD.md) - Product Requirements and Business Logic.
-- [`/docs/ux-review.md`](docs/ux-review.md) - Analysis of UI/UX iterations and embed integrations.
-- [`/docs/react_migration_handoff.md`](docs/react_migration_handoff.md) - Engineering handoff and roadmap notes.
+| Event | When | Payload |
+|---|---|---|
+| `ftc:resize` | Whenever body height changes (rAF-throttled) | `{ type, height }` |
+| `ftc:scrollToRegistration` | User clicks **Register Now** on the receipt screen | `{ type }` |
 
-## 🛡️ License & Contributing
+## Adding a new city
 
-Currently maintained by the Tango Charities web team. For feature requests or major bugs, please create an Issue outlining the request before submitting a Pull Request.
+Edit `src/data/chapters.js` only. Add one object to the `CHAPTERS` array:
+
+```js
+{ slug: 'city-name-st', name: 'City, ST', page: '/feed-the-city-slug', week: 3 }
+```
+
+- `slug` — lowercase, hyphenated, used as `?chapter=` URL param
+- `name` — display label shown on the receipt
+- `page` — Wix event page path (for reference only)
+- `week` — 1–4, which Saturday of the month
+
+## Project layout
+
+```
+src/
+  App.jsx                    two-state flow root (PLAN ↔ EVENTBRITE)
+  main.jsx                   React entrypoint
+  index.css                  brand tokens + global resets
+  components/
+    MainCalculator.jsx       goal setter + live ingredient grid
+    IngredientCard.jsx       row with product image, description, qty
+    EventbriteReveal.jsx     tabbed receipt + Copy / Save / Register
+  data/
+    chapters.js              46 city entries
+    ingredients.js           ITEMS, quantity formulas, unit helpers
+public/
+  favicon.svg
+  icons.svg
+vercel.json                  SPA rewrites + iframe-allow headers
+```
+
+## Brand
+
+| Token | Value | Use |
+|---|---|---|
+| `--orange` | `#FF6500` | Primary CTA, hero numbers, accents |
+| `--navy` | `#003366` | Receipt headline, canvas header |
+| `--white` | `#FFFFFF` | Card surfaces |
+| `--muted` | `#9CA3AF` | Hints, secondary labels |
+
+Fonts: **Anton** (display) · **Open Sans** (body) — both via Google Fonts.
+
+All UI runs on a white / near-white background so the iframe blends into the Wix page. No dark mode.
