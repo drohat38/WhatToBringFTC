@@ -1,8 +1,6 @@
 .vercel
 node_modules/
 dist/
-/ftc-react-app/dist/
-/ftc-react-app-v2/dist/
 
 # Temp screenshots and debug images — never commit these
 **/_*.png

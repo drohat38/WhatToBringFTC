@@ -2,8 +2,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/v1", "destination": "/v1/index.html" },
-    { "source": "/v1/", "destination": "/v1/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
