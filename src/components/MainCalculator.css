@@ -278,3 +278,43 @@
   font-family: 'Anton', sans-serif;
   font-size: 15px;
 }
+
+/* ── Mobile Compression to achieve No-Scroll ── */
+@media (max-width: 600px) {
+  .goal-section {
+    padding: 16px 12px 10px;
+  }
+  .goal-eyebrow {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .g-input {
+    font-size: 60px;
+    width: 130px;
+  }
+  .g-btn {
+    width: 48px;
+    height: 48px;
+  }
+  .g-unit {
+    margin-top: 0px;
+  }
+  .sec-hd {
+    padding: 8px 12px 0;
+  }
+  .sec-rule {
+    margin: 6px auto 10px;
+  }
+  .cta-block {
+    padding: 16px 12px 20px;
+    margin: 8px auto 0;
+  }
+  .cta-primary {
+    height: 48px;
+    font-size: 14px;
+    margin-bottom: 0px;
+  }
+  .ig {
+    padding: 0 12px;
+  }
+}
