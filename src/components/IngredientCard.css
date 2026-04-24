@@ -100,38 +100,4 @@
 @keyframes icFadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Mobile Micro-Grid ── */
-@media (max-width: 600px) {
-  .ic-pill {
-    padding: 6px 12px;
-    gap: 12px;
-    margin-bottom: 6px;
-    border-radius: 10px;
-  }
-  .ic-big-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-  }
-  .ic-big-img img {
-    width: 32px;
-    height: 32px;
-  }
-  .ic-name {
-    font-size: 14px;
-    margin-bottom: 0px;
-  }
-  .ic-hint {
-    font-size: 10px;
-    line-height: 1.2;
-    /* Optional: -webkit-line-clamp could be used here to keep it 1 line, but standard wrapping is usually fine */
-  }
-  .ic-num {
-    font-size: 16px;
-  }
-  .ic-unit {
-    font-size: 9px;
-  }
 }
