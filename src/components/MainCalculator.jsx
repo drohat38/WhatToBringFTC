@@ -114,14 +114,33 @@ function MainCalculator({ goal, setGoal, onFlowChange }) {
         {/* ── RIGHT COLUMN: INGREDIENTS STACK ── */}
         <div className="layout-right">
           <div className="sec-hd">
-            <p className="sec-ttl">Shopping List Requirements</p>
+            <p className="sec-ttl">Sandwich Supplies</p>
             <div className="sec-rule" />
           </div>
           <div className="ig" role="list">
-            {allItems.map((item, index) => (
+            {ITEMS.map((item, index) => (
               <motion.div
                 key={item.key}
                 exit={{ opacity: 0, y: 20, transition: { duration: 0.22, delay: index * 0.025 } }}
+              >
+                <IngredientCard
+                  item={item}
+                  qty={req[item.key]}
+                  unit={getUnit(item, req[item.key])}
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="sec-hd">
+            <p className="sec-ttl">Snack Items</p>
+            <div className="sec-rule" />
+          </div>
+          <div className="ig" role="list">
+            {ALSO_ITEMS.map((item, index) => (
+              <motion.div
+                key={item.key}
+                exit={{ opacity: 0, y: 20, transition: { duration: 0.22, delay: (ITEMS.length + index) * 0.025 } }}
               >
                 <IngredientCard
                   item={item}

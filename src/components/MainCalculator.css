@@ -286,6 +286,9 @@
   .ig {
     margin: 0;
     max-width: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .cta-desktop {
