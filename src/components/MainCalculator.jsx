@@ -24,7 +24,6 @@ function MainCalculator({ goal, setGoal, onFlowChange }) {
   }
 
   const req = getReq(typeof goal === 'number' ? goal : 5)
-  const allItems = [...ITEMS, ...ALSO_ITEMS]
 
   return (
     <motion.div id="view-main" exit={{ opacity: 0, transition: { duration: 0.35, delay: 0.1 } }}>

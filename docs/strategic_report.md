@@ -10,8 +10,7 @@ An evaluation of the `v1` web application reveals a highly capable, aestheticall
 - **Flexible Data Entry:** Eliminating the previous hard constraints on receipts or specific brand images in favor of straightforward email verification offers immense value. Users can opt for bulk/store-brands (like Great Value) without friction.
 - **Impact Lifecycle:** The progression from *Plan* \u2192 *Log* \u2192 *Impact* flows naturally. The personalized "Impact Card" creation and milestone gamification creates an emotional feedback loop unmatched by plain text lists.
 
-![App Analysis Recording](file:///C:/Users/anand/.gemini/antigravity/brain/556403b2-416a-40e9-a36d-238e286c79ba/app_and_tango_analysis_1775692392786.webp)
-*Recording of visual analysis across the local application and Tango Charities Denton event page.*
+*A screen recording of the visual analysis across the local app and the Tango Charities Denton event page was produced during this review. The recording lived on the author's machine and is not included in this repository.*
 
 ## 2. Integration Strategy: The Denton Deployment
 

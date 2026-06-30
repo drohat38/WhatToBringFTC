@@ -12,7 +12,7 @@
   --navy:    #003366;
   --white:   #FFFFFF;
   --text:    #1A1A1A;
-  --muted:   #9CA3AF;
+  --muted:   #6B7280;
   --border:  #E5E7EB;
   --bg:      #F9FAFB;
   --success: #16A34A;
@@ -50,4 +50,13 @@ html, body {
 #app-shell {
   position: relative;
   width: 100%;
+}
+
+/* ── Keyboard focus ──
+   A visible ring for keyboard users only (not on mouse click). `!important`
+   intentionally overrides component-level `outline: none` (e.g. .g-input). */
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 3px solid var(--navy) !important;
+  outline-offset: 2px;
+  border-radius: 4px;
 }

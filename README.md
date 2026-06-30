@@ -1,38 +1,77 @@
-# Feed The City — Volunteer Planner
+# Feed the City — Volunteer Planner
 
-A single-page React app that replaces the static "What to Bring" block on every [Tango Charities](https://tangocharities.org) city event page. Volunteers pick a sandwich goal, the tool computes exact ingredient quantities, and one button scrolls the parent Wix page down to the existing Eventbrite embed so they can register.
+[![CI](https://github.com/drohat38/WhatToBringFTC/actions/workflows/ci.yml/badge.svg)](https://github.com/drohat38/WhatToBringFTC/actions/workflows/ci.yml)
 
-Designed to live inside a Wix iframe on ~46 city pages. Height and scroll-to-registration are coordinated with the parent page via `postMessage`.
+A single-page React app that turns a volunteer's sandwich goal into an exact shopping list, then hands them off to event registration — built to replace the static "What to Bring" block on [Tango Charities](https://tangocharities.org) *Feed the City* event pages.
 
-## Flow
+## Status
 
-1. **Plan** — pick a sandwich goal; see live-computed quantities for bread, meat, cheese, mustard, bags, chips, tangerines.
-2. **Receipt** — tabbed shopping-list card with the same quantities; Copy / Save-as-Image / Register Now.
-3. **Register Now** — posts `{ type: 'ftc:scrollToRegistration' }` to the parent window, which scrolls the Wix page down to the native Eventbrite embed already on that page.
+**Live.** The calculator, shopping-list output, and registration handoff are built and deployed. The app is designed to be embedded as an iframe on the Tango Charities Wix event pages.
+
+This README marks **what is built** vs **what is planned** so the scope is never overstated:
+
+| Capability | State |
+|---|---|
+| Sandwich-goal ingredient calculator | ✅ Built |
+| Shopping-list output (copy text / save as image) | ✅ Built |
+| Registration handoff (scroll parent page to Eventbrite) | ✅ Built |
+| Per-city chapter context via URL parameter | ✅ Built |
+| Iframe auto-resize for Wix embeds | ✅ Built |
+| Impact tracker / lifetime-meals dashboard | 🚧 Planned |
+| Volunteer email capture & profile | 🚧 Planned |
+| Shareable "Impact Card" image | 🚧 Planned |
+| Supabase backend / cross-device sync | 🚧 Planned |
+| Organizer/leader features (leaderboards, community progress) | 🚧 Planned |
+
+The planned items are described in the project's `docs/` as a product vision. **None of them exist in the shipped code yet** — there is no email capture, impact tracking, or backend in this repository.
+
+## Demo
+
+**Live deployment:** https://what-to-bring-ftc.vercel.app
+
+The planner normally runs inside an iframe on a Tango Charities event page; the link above is the standalone build. Append `?chapter=<slug>` to preview a specific city — for example, [`?chapter=denton-tx`](https://what-to-bring-ftc.vercel.app/?chapter=denton-tx). Chapter slugs are listed in `src/data/chapters.js`.
+
+## Overview
+
+Instead of reading a static "What to Bring" list and doing the math by hand, a volunteer picks how many sandwiches they want to supply and the app computes exact quantities for every ingredient. It then produces a shareable shopping list and sends the volunteer on to the event's existing Eventbrite registration.
+
+The app runs as an iframe embedded in the parent Wix page. It coordinates its height and a scroll-to-registration action with the parent via `postMessage`, so the embed feels like a native part of the page.
+
+## Features
+
+1. **Plan** — pick a sandwich goal (5–500) with a stepper or direct input; quantities for bread, deli meat, cheese, mustard, sandwich bags, chips, and tangerines update live.
+2. **Shopping list** — a receipt-style card showing the same quantities, with **Copy** (clipboard) and **Save as Image** (PNG, rendered with the Canvas API; uses the native Web Share sheet on mobile when available).
+3. **Register Now** — posts `{ type: 'ftc:scrollToRegistration' }` to the parent window, which scrolls the Wix page down to the Eventbrite embed already on that page.
+
+Per-city context (city name and which Saturday of the month) is read from the `?chapter=` URL parameter and shown on the shopping list.
 
 ## Tech stack
 
 - **React 19** + **Vite 8**
-- **Framer Motion** for view transitions and staggered list reveals
-- Vanilla CSS (glassmorphism on white; no Tailwind / no component library)
-- Deployed on **Vercel**, auto-deployed on push to `master`
+- **Framer Motion 12** — view transitions and staggered list reveals
+- Vanilla CSS (glassmorphism on a white background; no Tailwind, no component library)
+- **Vercel** for hosting, auto-deployed on push to `master`
 
-## Local development
+## Getting started
+
+Requires Node.js 20.19+ or 22.12+ (Vite 8).
 
 ```bash
 npm install
 npm run dev        # http://localhost:5173
-npm run build      # writes to dist/
-npm run preview    # serve the built bundle
+npm run build      # outputs to dist/
+npm run preview    # serve the built bundle locally
+npm run lint       # ESLint
+npm test           # unit tests (Vitest)
 ```
 
 ## Iframe integration (Wix)
 
-The planner lives at the site root. Per-city chapter info is passed via a URL param:
+The planner lives at the site root. Per-city chapter info is passed via a URL parameter:
 
 ```html
 <iframe
-  src="https://<vercel-url>/?chapter=denton-tx"
+  src="https://what-to-bring-ftc.vercel.app/?chapter=denton-tx"
   width="100%"
   height="950"
   frameborder="0"
@@ -42,7 +81,9 @@ The planner lives at the site root. Per-city chapter info is passed via a URL pa
 </iframe>
 ```
 
-### Required Wix Velo snippet (one per event page)
+`height` is a fallback; the app posts its real height to the parent on every layout change (see below), so the parent can resize the iframe to fit.
+
+### Wix Velo snippet (one per event page)
 
 ```js
 $w.onReady(function () {
@@ -64,8 +105,8 @@ Replace `#plannerIframe` and `#eventbriteSection` with the real Wix element IDs.
 
 | Event | When | Payload |
 |---|---|---|
-| `ftc:resize` | Whenever body height changes (rAF-throttled) | `{ type, height }` |
-| `ftc:scrollToRegistration` | User clicks **Register Now** on the receipt screen | `{ type }` |
+| `ftc:resize` | Whenever the body height changes (rAF-throttled) | `{ type, height }` |
+| `ftc:scrollToRegistration` | User clicks **Register Now** on the shopping-list screen | `{ type }` |
 
 ## Adding a new city
 
@@ -75,30 +116,39 @@ Edit `src/data/chapters.js` only. Add one object to the `CHAPTERS` array:
 { slug: 'city-name-st', name: 'City, ST', page: '/feed-the-city-slug', week: 3 }
 ```
 
-- `slug` — lowercase, hyphenated, used as `?chapter=` URL param
-- `name` — display label shown on the receipt
-- `page` — Wix event page path (for reference only)
-- `week` — 1–4, which Saturday of the month
+- `slug` — lowercase, hyphenated; used as the `?chapter=` URL value
+- `name` — display label shown on the shopping list
+- `page` — Wix event-page path (for reference only)
+- `week` — 1–4, which Saturday of the month the event falls on
 
 ## Project layout
 
 ```
 src/
-  App.jsx                    two-state flow root (PLAN ↔ EVENTBRITE)
-  main.jsx                   React entrypoint
-  index.css                  brand tokens + global resets
+  App.jsx                  two-state flow root (PLAN ↔ EVENTBRITE)
+  main.jsx                 React entry point
+  index.css                brand tokens + global resets
   components/
-    MainCalculator.jsx       goal setter + live ingredient grid
-    IngredientCard.jsx       row with product image, description, qty
-    EventbriteReveal.jsx     tabbed receipt + Copy / Save / Register
+    MainCalculator.jsx     goal stepper + live ingredient grid
+    IngredientCard.jsx     row with product image, hint, and quantity
+    EventbriteReveal.jsx   shopping-list card + Copy / Save / Register
   data/
-    chapters.js              46 city entries
-    ingredients.js           ITEMS, quantity formulas, unit helpers
+    chapters.js            city entries + lookup helpers
+    chapters.test.js       unit tests for chapter lookup + grouping
+    ingredients.js         items, quantity formulas, unit helpers
+    ingredients.test.js    unit tests for the quantity formulas
 public/
   favicon.svg
   icons.svg
-vercel.json                  SPA rewrites + iframe-allow headers
+docs/                      internal product and planning notes
+.github/workflows/ci.yml   CI — lint, test, and build on every push/PR
+index.html                 app shell
+vite.config.js             Vite + React plugin
+eslint.config.js           ESLint flat config
+vercel.json                SPA rewrites + iframe-allow headers
 ```
+
+> The `docs/` folder contains internal product, strategy, and UX-planning notes. Several describe **planned** features (impact tracker, email capture, Supabase) that are not yet built — treat them as vision documents, not a description of the shipped app.
 
 ## Brand
 
@@ -109,6 +159,8 @@ vercel.json                  SPA rewrites + iframe-allow headers
 | `--white` | `#FFFFFF` | Card surfaces |
 | `--muted` | `#9CA3AF` | Hints, secondary labels |
 
-Fonts: **Anton** (display) · **Open Sans** (body) — both via Google Fonts.
+Fonts: **Anton** (display) and **Open Sans** (body), both loaded from Google Fonts. All UI runs on a white / near-white background so the iframe blends into the Wix page. No dark mode.
 
-All UI runs on a white / near-white background so the iframe blends into the Wix page. No dark mode.
+## License
+
+No license has been chosen yet, so this project is currently **all rights reserved** by its author. If you intend to make it reusable, add a `LICENSE` file (for example, MIT).
