@@ -70,7 +70,7 @@ function EventbriteReveal({ goal, onReset }) {
     ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;'
     document.body.appendChild(ta)
     ta.focus(); ta.select()
-    try { document.execCommand('copy'); flashCopied() } catch (e) { /* silent */ }
+    try { document.execCommand('copy'); flashCopied() } catch { /* silent */ }
     document.body.removeChild(ta)
   }
 

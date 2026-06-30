@@ -24,3 +24,6 @@ Thumbs.db
 .env
 .env.local
 .env*.local
+
+# AI / editor tooling — keep local-only config out of the public repo
+.claude/
