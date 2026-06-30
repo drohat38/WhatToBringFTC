@@ -1,5 +1,7 @@
 # Feed the City — Volunteer Planner
 
+[![CI](https://github.com/drohat38/WhatToBringFTC/actions/workflows/ci.yml/badge.svg)](https://github.com/drohat38/WhatToBringFTC/actions/workflows/ci.yml)
+
 A single-page React app that turns a volunteer's sandwich goal into an exact shopping list, then hands them off to event registration — built to replace the static "What to Bring" block on [Tango Charities](https://tangocharities.org) *Feed the City* event pages.
 
 ## Status
@@ -60,6 +62,7 @@ npm run dev        # http://localhost:5173
 npm run build      # outputs to dist/
 npm run preview    # serve the built bundle locally
 npm run lint       # ESLint
+npm test           # unit tests (Vitest)
 ```
 
 ## Iframe integration (Wix)
@@ -131,11 +134,14 @@ src/
     EventbriteReveal.jsx   shopping-list card + Copy / Save / Register
   data/
     chapters.js            city entries + lookup helpers
+    chapters.test.js       unit tests for chapter lookup + grouping
     ingredients.js         items, quantity formulas, unit helpers
+    ingredients.test.js    unit tests for the quantity formulas
 public/
   favicon.svg
   icons.svg
-docs/                      product/planning notes and design references
+docs/                      internal product and planning notes
+.github/workflows/ci.yml   CI — lint, test, and build on every push/PR
 index.html                 app shell
 vite.config.js             Vite + React plugin
 eslint.config.js           ESLint flat config
