@@ -47,7 +47,16 @@ function EventbriteReveal({ goal, onReset }) {
   const allItems = [...ITEMS, ...ALSO_ITEMS]
 
   function handleRegister() {
-    window.parent.postMessage({ type: 'ftc:scrollToRegistration' }, '*')
+    // Embedded in the Wix page: ask the parent to scroll to the Eventbrite
+    // embed. Standalone (e.g. the demo URL, where window.parent === window):
+    // there is no parent to scroll, so open the real event page instead.
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'ftc:scrollToRegistration' }, '*')
+      return
+    }
+    const base = 'https://www.tangocharities.org'
+    const href = chapter?.page ? base + chapter.page : base + '/feed-the-city'
+    window.open(href, '_blank', 'noopener')
   }
 
   function flashCopied() {
